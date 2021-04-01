@@ -83,8 +83,8 @@ agent:
   wlSocket: /run/spire/vshastaio/sockets
 
   init:
-    repository: gcr.io/spiffe-io/wait-for-it
-    tag: latest
+    repository: gcr.io/sdlc-ops/wait-for-it
+    tag: "20210322"
     pullPolicy: IfNotPresent
 
   image:
