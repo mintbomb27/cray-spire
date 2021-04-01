@@ -28,12 +28,12 @@ spec:
           # This is a small image with wait-for-it, choose whatever image
           # you prefer that waits for a service to be up. This image is built
           # from https://github.com/lqhl/wait-for-it
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.agent.init.repository }}:{{ .Values.agent.init.tag }}"
+          image: "{{ .Values.agent.init.repository }}:{{ .Values.agent.init.tag }}"
           imagePullPolicy: {{ .Values.agent.init.pullPolicy }}
           args: ["-t", "30", "spire-server:{{ .Values.server.port }}"]
       containers:
         - name: {{ template "spire.name" . }}
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
           args: ["-config", "/run/spire/config/spire-agent.conf"]
           volumeMounts:

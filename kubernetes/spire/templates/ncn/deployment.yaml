@@ -22,7 +22,7 @@ spec:
           effect: NoSchedule
       initContainers:
         - name: init-setperms
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.ncn.init.repository }}:{{ .Values.ncn.init.tag }}"
+          image: "{{ .Values.ncn.init.repository }}:{{ .Values.ncn.init.tag }}"
           command:
             - '/bin/sh'
           args:
@@ -33,7 +33,7 @@ spec:
             - name: token
               mountPath: /token
         - name: request-ncn-join-token
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.ncn.curl.repository }}:{{ .Values.ncn.curl.tag }}"
+          image: "{{ .Values.ncn.curl.repository }}:{{ .Values.ncn.curl.tag }}"
           command:
             - '/bin/sh'
           args:
@@ -57,7 +57,7 @@ spec:
               mountPath: /bundle
               readOnly: true
         - name: init-restoreperms
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.ncn.init.repository }}:{{ .Values.ncn.init.tag }}"
+          image: "{{ .Values.ncn.init.repository }}:{{ .Values.ncn.init.tag }}"
           command:
             - '/bin/sh'
           args:
@@ -69,7 +69,7 @@ spec:
               mountPath: /token
       containers:
         - name: pause
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.ncn.pause.repository }}:{{ .Values.ncn.pause.tag }}"
+          image: "{{ .Values.ncn.pause.repository }}:{{ .Values.ncn.pause.tag }}"
       volumes:
         - name: token
           hostPath:

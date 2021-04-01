@@ -1,5 +1,4 @@
 nameOverride: ""
-imagesHost: "registry.local"
 
 global:
   chart:
@@ -10,8 +9,8 @@ trustDomain: shasta
 
 server:
   replicaCount: 3
-  fqdnCompute: spire-local.local
-  fqdnNCN: spire.local
+  lbIP: "10.92.100.82"
+  fqdn: spire.local
   port: 8081
   logLevel: INFO
   jwtIssuer: http://spire.local/shasta/vshastaio
@@ -33,17 +32,17 @@ server:
     pullPolicy: IfNotPresent
 
   init2:
-    repository: baseos/alpine
+    repository: dtr.dev.cray.com/baseos/alpine
     tag: 3.11.5
     pullPolicy: IfNotPresent
 
   image:
-    repository: spiffe-io/spire-server
+    repository: gcr.io/spiffe-io/spire-server
     tag: 0.12.0
     pullPolicy: IfNotPresent
 
   registration:
-    repository: cray/cray-spire-tokens
+    repository: dtr.dev.cray.com/cray/cray-spire-tokens
     tag: 0.4.0
     pullPolicy: IfNotPresent
 
@@ -84,12 +83,12 @@ agent:
   wlSocket: /run/spire/vshastaio/sockets
 
   init:
-    repository: spiffe-io/wait-for-it
+    repository: gcr.io/spiffe-io/wait-for-it
     tag: latest
     pullPolicy: IfNotPresent
 
   image:
-    repository: spiffe-io/spire-agent
+    repository: gcr.io/spiffe-io/spire-agent
     tag: 0.12.0
     pullPolicy: IfNotPresent
 
@@ -101,7 +100,7 @@ jwks:
   replicaCount: 3
 
   image:
-    repository: spiffe-io/oidc-discovery-provider
+    repository: gcr.io/spiffe-io/oidc-discovery-provider
     tag: 0.12.0
     pullPolicy: IfNotPresent
 
@@ -117,8 +116,8 @@ bundle:
   replicaCount: 3
 
   image:
-    repository: cray/cray-spire-bundle
-    tag: 0.1.0-
+    repository: dtr.dev.cray.com/cray/cray-spire-bundle
+    tag: 0.1.0
     pullPolicy: IfNotPresent
 
 bss:
@@ -132,7 +131,7 @@ ncn:
   filename: join_token
   path: /root/spire/conf
   init:
-    repository: baseos/alpine
+    repository: dtr.dev.cray.com/baseos/alpine
     tag: 3.12.0
   curl:
     repository: curlimages/curl

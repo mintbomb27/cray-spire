@@ -35,7 +35,7 @@ spec:
       initContainers:
       - name: init
         # Wait for the agent workload socket to appear
-        image: "{{ include "spire.image-prefix" . }}{{ .Values.jwks.image.repository }}:{{ .Values.jwks.image.tag }}"
+        image: "{{ .Values.jwks.image.repository }}:{{ .Values.jwks.image.tag }}"
         imagePullPolicy: {{ .Values.jwks.image.pullPolicy }}
         command:
           - "/bin/sh"
@@ -49,7 +49,7 @@ spec:
           readOnly: true
       containers:
       - name: {{ include "spire.name" . }}-jwks
-        image: "{{ include "spire.image-prefix" . }}{{ .Values.jwks.image.repository }}:{{ .Values.jwks.image.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.jwks.image.repository }}:{{ .Values.jwks.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.jwks.image.pullPolicy }}
         args: ["-config", "/run/spire/config/spire-jwks-provider.conf"]
         lifecycle:
@@ -69,7 +69,7 @@ spec:
           mountPath: /run/spire/jwks
           readOnly: false
       - name: {{ include "spire.name" . }}-nginx
-        image: "{{ include "spire.image-prefix" . }}{{ .Values.jwks.nginx.repository }}:{{ .Values.jwks.nginx.tag }}"
+        image: "{{ .Values.jwks.nginx.repository }}:{{ .Values.jwks.nginx.tag }}"
         imagePullPolicy: {{ .Values.jwks.nginx.pullPolicy }}
         command: ["nginx", "-c", "/run/spire/config/spire-jwks-nginx.conf"]
         env:

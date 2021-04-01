@@ -21,14 +21,14 @@ spec:
       serviceAccountName: {{ include "spire.name" . }}-bundle
       containers:
         - name: {{ template "spire.name" . }}-bundle
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.bundle.image.repository }}:{{ .Values.bundle.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.bundle.image.repository }}:{{ .Values.bundle.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.bundle.image.pullPolicy }}
           args: ["-config", "/run/spire/config/spire-bundle.conf"]
           env:
             - name: DOMAIN
               value: "{{ .Values.trustDomain }}"
             - name: SERVER
-              value: "{{ .Values.server.fqdnCompute }}"
+              value: "{{ .Values.server.lbIP }}"
             - name: BUNDLE
               value: "/run/spire/bundle/bundle.crt"
           ports:

@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: {{ template "spire.name" . }}-update-bss
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.bss.curl.repository }}:{{ .Values.bss.curl.tag }}"
+          image: "{{ .Values.bss.curl.repository }}:{{ .Values.bss.curl.tag }}"
           command:
             - '/bin/sh'
             - '-x'

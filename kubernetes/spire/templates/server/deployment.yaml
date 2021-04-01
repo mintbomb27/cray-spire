@@ -39,11 +39,11 @@ spec:
           # This is a small image with wait-for-it, choose whatever image
           # you prefer that waits for a service to be up. This image is built
           # from https://github.com/lqhl/wait-for-it
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.server.init.repository }}:{{ .Values.server.init.tag }}"
+          image: "{{ .Values.server.init.repository }}:{{ .Values.server.init.tag }}"
           imagePullPolicy: {{ .Values.server.init.pullPolicy }}
           args: ["-t", "30", "{{ include "spire.fullname" . }}-postgres:5432"]
         - name: init2
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.server.init2.repository }}:{{ .Values.server.init2.tag }}"
+          image: "{{ .Values.server.init2.repository }}:{{ .Values.server.init2.tag }}"
           imagePullPolicy: {{ .Values.server.init2.pullPolicy }}
           command: ['sh', '-c', 'sed -e "s/POSTGRESUSER/$(cat /run/spire/db-creds/username)/" -e "s/POSTGRESPASS/$(cat /run/spire/db-creds/password)/" < /run/spire/config/spire-server.conf > /run/spire/server/spire-server.conf']
           volumeMounts:
@@ -58,7 +58,7 @@ spec:
               readOnly: true
       containers:
         - name: {{ include "spire.name" . }}-server
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+          image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
           args: ["-config", "/run/spire/server/spire-server.conf"]
           ports:
@@ -98,7 +98,7 @@ spec:
               mountPath: /run/spire/data
               readOnly: false
         - name: {{ include "spire.name" . }}-registration-server
-          image: "{{ include "spire.image-prefix" . }}{{ .Values.server.registration.repository }}:{{ .Values.server.registration.tag }}"
+          image: "{{ .Values.server.registration.repository }}:{{ .Values.server.registration.tag }}"
           imagePullPolicy: {{ .Values.server.registration.pullPolicy }}
           env:
             - name: SPIRE_DOMAIN
