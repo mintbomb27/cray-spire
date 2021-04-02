@@ -106,6 +106,20 @@ data:
 
     create \
       -parentID spiffe://{{ .Values.trustDomain }}/ncn \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/ncn/workload/cpsmount_helper \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/opt/cray/cps-utils/bin/cpsmount_helper
+
+    create \
+      -parentID spiffe://{{ .Values.trustDomain }}/compute \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/compute/workload/cpsmount_helper \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/opt/cray/cps-utils/bin/cpsmount_helper
+
+    create \
+      -parentID spiffe://{{ .Values.trustDomain }}/ncn \
       -spiffeID spiffe://{{ .Values.trustDomain }}/ncn/workload/cpsmount \
       -selector unix:uid:0 \
       -selector unix:gid:0 \
@@ -145,6 +159,13 @@ data:
       -selector unix:uid:0 \
       -selector unix:gid:0 \
       -selector unix:path:/usr/bin/orca-spire-agent
+
+    create \
+      -parentID spiffe://{{ .Values.trustDomain }}/compute \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/compute/workload/ckdump_helper \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/usr/sbin/ckdump_helper
 
     create \
       -parentID spiffe://{{ .Values.trustDomain }}/compute \
