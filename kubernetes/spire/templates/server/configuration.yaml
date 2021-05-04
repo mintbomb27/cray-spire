@@ -23,6 +23,16 @@ data:
       jwt_issuer = "{{ .Values.server.jwtIssuer }}"
     }
 
+    telemetry {
+      Prometheus {
+        # host: Prometheus server host.
+        # host = ""
+
+        # port: Prometheus server port.
+        port = 9988
+      }
+    }
+
     plugins {
       UpstreamAuthority "disk" { plugin_data {
               cert_file_path = "/run/spire/tls/tls.crt"
