@@ -60,6 +60,10 @@ spec:
         - name: {{ include "spire.name" . }}-server
           image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
+          env:
+            # This env is used to restart pod when this configuration option changes
+            - name: connectionPooler
+              value: "{{ index .Values "cray-service" "sqlCluster" "connectionPooler" "enabled" }}"
           args: ["-config", "/run/spire/server/spire-server.conf"]
           ports:
             - name: grpc

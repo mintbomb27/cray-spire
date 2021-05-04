@@ -44,8 +44,11 @@ data:
       DataStore "sql" {
         plugin_data {
           database_type = "postgres"
-          connection_string = "dbname={{ .Values.server.database }} user=POSTGRESUSER password=POSTGRESPASS host={{ include "spire.fullname" . }}-postgres"
-          max_open_conns = {{ .Values.server.maxOpenDBConns }}
+          {{- if index .Values "cray-service" "sqlCluster" "connectionPooler" "enabled" }}
+          connection_string = "dbname={{ .Values.server.database }} user=POSTGRESUSER password=POSTGRESPASS host={{ include "spire.fullname" . }}-postgres-pooler.{{ .Release.Namespace }}.svc.cluster.local"
+          {{- else }}
+          connection_string = "dbname={{ .Values.server.database }} user=POSTGRESUSER password=POSTGRESPASS host={{ include "spire.fullname" . }}-postgres.{{ .Release.Namespace }}.svc.cluster.local"
+          {{- end }}
         }
       }
 
