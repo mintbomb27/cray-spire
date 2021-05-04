@@ -16,6 +16,7 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         name: request-ncn-join-token
     spec:
+      serviceAccountName: {{ include "spire.fullname" . }}-request-ncn-join-token
       tolerations:
         # this toleration is to have the daemonset runnable on master nodes
         - key: node-role.kubernetes.io/master

@@ -1,0 +1,14 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "spire.name" . }}-jwks-psp
+  labels:
+    app.kubernetes.io/name: {{ template "spire.name" . }}-jwks
+    {{- include "spire.common-labels" . | nindent 4 }}
+roleRef:
+  kind: ClusterRole
+  name: restricted-transition-psp
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: {{ include "spire.name" . }}-jwks
