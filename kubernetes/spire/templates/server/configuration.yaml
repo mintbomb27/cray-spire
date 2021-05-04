@@ -10,6 +10,7 @@ data:
     server {
       ratelimit = {
         attestation = false
+        signing = false
       }
       bind_address = "0.0.0.0"
       bind_port = "{{ .Values.server.port }}"

@@ -38,7 +38,7 @@ server:
 
   image:
     repository: gcr.io/spiffe-io/spire-server
-    tag: 0.12.0
+    tag: 0.12.2
     pullPolicy: IfNotPresent
 
   registration:
@@ -92,7 +92,7 @@ agent:
 
   image:
     repository: gcr.io/spiffe-io/spire-agent
-    tag: 0.12.0
+    tag: 0.12.2
     pullPolicy: IfNotPresent
 
 jwks:
@@ -104,7 +104,7 @@ jwks:
 
   image:
     repository: gcr.io/spiffe-io/oidc-discovery-provider
-    tag: 0.12.0
+    tag: 0.12.2
     pullPolicy: IfNotPresent
 
   nginx:
