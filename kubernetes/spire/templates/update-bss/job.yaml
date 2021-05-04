@@ -4,7 +4,6 @@ metadata:
   name: {{ include "spire.fullname" . }}-update-bss
   labels:
     app.kubernetes.io/name: {{ template "spire.name" . }}-update-bss
-    {{- include "spire.common-labels" . | nindent 4 }}
 spec:
   template:
     metadata:
