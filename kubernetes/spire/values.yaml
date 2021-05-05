@@ -113,6 +113,7 @@ jwks:
     pullPolicy: IfNotPresent
 
 bundle:
+  enabled: false
   uriPrefix: spire-bundle
   logLevel: INFO
   port: 8080
