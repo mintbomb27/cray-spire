@@ -76,7 +76,7 @@ cray-service:
         memory: 4Gi
     waitForItJob: false
     connectionPooler:
-      enabled: true
+      enabled: false
 
 tls:
   issuer: cert-manager-issuer-common
