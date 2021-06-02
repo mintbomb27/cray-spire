@@ -60,7 +60,7 @@ cray-service:
     enabled: true
     instanceCount: 3
     postgresVersion: "11"
-    volumeSize: 20Gi
+    volumeSize: 60Gi
     users:
       spire: []
     databases:
