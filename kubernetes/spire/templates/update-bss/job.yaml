@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "spire.fullname" . }}-update-bss
+  name: {{ include "spire.fullname" . }}-update-bss-{{ .Release.Revision }}
   labels:
     app.kubernetes.io/name: {{ template "spire.name" . }}-update-bss
 spec:
