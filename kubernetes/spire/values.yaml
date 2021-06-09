@@ -14,7 +14,7 @@ server:
   port: 8081
   logLevel: INFO
   jwtIssuer: http://spire.local/shasta/vshastaio
-  caTTL: 24h
+  caTTL: 2160h
   svidDefaultTTL: 12h
   database: spire
   maxOpenDBConns: 20
