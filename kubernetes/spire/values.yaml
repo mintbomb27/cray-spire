@@ -77,6 +77,9 @@ cray-service:
     waitForItJob: false
     connectionPooler:
       enabled: true
+    parameters:
+      idle_in_transaction_session_timeout: "5000"
+      statement_timeout: "60000"
 
 tls:
   issuer: cert-manager-issuer-common
