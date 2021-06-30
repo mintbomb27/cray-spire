@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "spire-intermediate.fullname" . }}
+  name: {{ include "spire-intermediate.fullname" . }}-{{ .Release.Revision }}
   labels:
     app.kubernetes.io/name: {{ template "spire-intermediate.name" . }}
     {{- include "spire-intermediate.common-labels" . | nindent 4 }}
