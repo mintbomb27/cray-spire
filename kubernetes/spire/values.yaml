@@ -80,6 +80,9 @@ cray-service:
     parameters:
       idle_in_transaction_session_timeout: "5000"
       statement_timeout: "60000"
+    backup:
+      enabled: true
+      schedule: "10 3 * * *" # Once per day at 3:10AM
 
 tls:
   issuer: cert-manager-issuer-common
