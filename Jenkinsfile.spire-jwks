@@ -1,0 +1,16 @@
+@Library('dst-shared@master') _
+
+dockerBuildPipeline {
+ app = "spire-jwks"
+ name = "spire-jwks"
+ description = "Creates a modified spire-jwks container"
+ repository = "cray"
+ imagePrefix = "cray"
+ product = "csm"
+ dockerfile = "./docker/spire-jwks/Dockerfile"
+ dockerBuildContextDir = "./docker/spire-jwks"
+ versionScript = "cat docker/spire-jwks/.version"
+ githubPushRepo = "Cray-HPE/cray-spire"
+ githubPushBranches = /(release\/.*|master)/
+ useEntryPointForTest = "false"
+}

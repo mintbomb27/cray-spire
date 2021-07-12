@@ -50,15 +50,3 @@ pipeline {
   }
 
 }
-
-dockerBuildPipeline {
- app = "spire-jwks"
- name = "spire-jwks"
- description = "Creates a modified spire-jwks container"
- repository = "cray"
- imagePrefix = "cray"
-        product = "csm"
- dockerFile = "docker/spire-jwks/Dockerfile"
- dockerBuildContextDir = "docker/spire-jwks"
- versionScript = "cat docker/spire-jwks/.version"
-}
