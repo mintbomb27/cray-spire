@@ -9,7 +9,7 @@ dockerBuildPipeline {
  product = "csm"
  dockerfile = "./docker/spire-jwks/Dockerfile"
  dockerBuildContextDir = "./docker/spire-jwks"
- versionScript = "cat docker/spire-jwks/.version"
+ versionScript = "./docker/spire-jwks/.version"
  githubPushRepo = "Cray-HPE/cray-spire"
  githubPushBranches = /(release\/.*|master)/
  useEntryPointForTest = "false"
