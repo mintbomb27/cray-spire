@@ -109,8 +109,8 @@ jwks:
   replicaCount: 3
 
   image:
-    repository: gcr.io/spiffe-io/oidc-discovery-provider
-    tag: 0.12.2
+    repository: arti.dev.cray.com/csm-docker-stable-local/cray-spire-jwks
+    tag: 0.1.0
     pullPolicy: IfNotPresent
 
   nginx:
