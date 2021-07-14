@@ -109,7 +109,7 @@ jwks:
   replicaCount: 3
 
   image:
-    repository: arti.dev.cray.com/csm-docker-stable-local/cray-spire-jwks
+    repository: dtr.dev.cray.com/cray/cray-spire-jwks
     tag: 0.1.0
     pullPolicy: IfNotPresent
 
