@@ -20,6 +20,9 @@ spec:
         app.kubernetes.io/name: {{ include "spire.name" . }}-jwks
     spec:
       serviceAccountName: {{ include "spire.name" . }}-jwks
+{{- if .Values.jwks.priorityClassName }}
+      priorityClassName: {{ .Values.jwks.priorityClassName }}
+{{- end }}
       affinity:
           podAntiAffinity:
              preferredDuringSchedulingIgnoredDuringExecution:

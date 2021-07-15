@@ -19,6 +19,7 @@ server:
   database: spire
   maxOpenDBConns: 20
   registrationPort: 54440
+  priorityClassName: csm-high-priority-service
   tokenService:
     computeEntry: /compute/tenant1
     computeClusterEntry: /compute
@@ -61,6 +62,7 @@ cray-service:
     instanceCount: 3
     postgresVersion: "11"
     volumeSize: 60Gi
+    podPriorityClassName: csm-high-priority-service
     users:
       spire: []
     databases:
@@ -107,6 +109,7 @@ jwks:
   logLevel: INFO
   port: 80
   replicaCount: 3
+  priorityClassName: csm-high-priority-service
 
   image:
     repository: dtr.dev.cray.com/cray/cray-spire-jwks
