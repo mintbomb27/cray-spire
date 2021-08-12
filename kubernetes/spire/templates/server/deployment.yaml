@@ -98,9 +98,11 @@ spec:
             - name: spire-shared-socket
               mountPath: /tmp
               readOnly: false
+           {{- if not .Values.server.disableExternalCerts }}
             - name: spire-ca-tls
               mountPath: /run/spire/tls
               readOnly: true
+            {{- end }}
             - name: spire-data
               mountPath: /run/spire/data
               readOnly: false
@@ -128,6 +130,9 @@ spec:
             - name: spire-tokens-tls
               mountPath: /tls
               readOnly: true
+            - name: spire-workloads
+              mountPath: /workloads
+              readOnly: true
           ports:
             - name: registration
               containerPort: {{ .Values.server.registrationPort }}
@@ -149,9 +154,14 @@ spec:
         - name: spire-tokens-tls
           secret:
             secretName: {{ include "spire.fullname" . }}-tokens-tls
+        {{- if not .Values.server.disableExternalCerts }}
         - name: spire-ca-tls
           secret:
             secretName: spire.{{ .Release.Namespace }}.ca-tls
+        {{- end }}
+        - name: spire-workloads
+          configMap:
+            name: {{ include "spire.fullname" . }}-workloads
   volumeClaimTemplates:
     - metadata:
         name: spire-data
