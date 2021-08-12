@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: spire
+    meta.helm.sh/release-namespace: spire
+  name: spire-bundle
+  namespace: spire
+spec:
+  ports:
+    - name: http0
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  sessionAffinity: None
+  type: ClusterIP

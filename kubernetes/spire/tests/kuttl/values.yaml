@@ -1,0 +1,54 @@
+server:
+  priorityClassName: ""
+  disableServiceMonitor: true
+  replicaCount: 1
+  init:
+    repository: arti.dev.cray.com/third-party-docker-stable-local/sdlc-ops/wait-for-it
+
+  init2:
+    repository: artifactory.algol60.net/docker.io/alpine
+
+  registration:
+    repository: artifactory.algol60.net/csm-docker/unstable/spire-tokens
+    tag: 0.4.0-20210811234445_d2e6ed2
+
+  disableExternalCerts: true
+
+agent:
+  init:
+    repository: arti.dev.cray.com/third-party-docker-stable-local/sdlc-ops/wait-for-it
+
+cray-service:
+  sqlCluster:
+    instanceCount: 1
+    connectionPooler:
+      # Due to how we map images to dtr.dev.cray.com this cannot work locally
+      # without being able to override the whole postgres image name in the
+      # spire-create-pooler-schema job
+      enabled: false
+    podPriorityClassName: ""
+    resources:
+      limits:
+        cpu: 100m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+
+  init:
+    repository: arti.dev.cray.com/third-party-docker-stable-local/sdlc-ops/wait-for-it
+
+jwks:
+  replicaCount: 1
+  priorityClassName: ""
+
+  image:
+    repository: arti.dev.cray.com/csm-docker-stable-local/cray-spire-jwks
+  nginx:
+    repository: nginx
+
+ncn:
+  init:
+    repository: artifactory.algol60.net/docker.io/alpine
+
