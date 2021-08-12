@@ -9,7 +9,7 @@ metadata:
 data:
   ncn.yaml: |-
       ---
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/workload/XNAME/cpsmount_helper
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/cpsmount_helper
         selectors:
           - type: unix
             value: uid:0
@@ -17,7 +17,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/opt/cray/cps-utils/bin/cpsmount_helper
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/workload/XNAME/cpsmount
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/cpsmount
         selectors:
           - type: unix
             value: uid:0
@@ -25,7 +25,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/cpsmount-spire-agent
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/workload/XNAME/heartbeat
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/heartbeat
         selectors:
           - type: unix
             value: uid:0
@@ -33,7 +33,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/heartbeat-spire-agent
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/workload/XNAME/orca
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/orca
         selectors:
           - type: unix
             value: uid:0
@@ -41,7 +41,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/orca-spire-agent
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/workload/XNAME/ckdump
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/ckdump
         selectors:
           - type: unix
             value: uid:0
@@ -50,7 +50,7 @@ data:
           - type: unix
             value: path:/usr/bin/ckdump-spire-agent
         ttl: 864000
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/workload/XNAME/cfs-state-reporter
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/cfs-state-reporter
         selectors:
           - type: unix
             value: uid:0
@@ -58,7 +58,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/cfs-state-reporter-spire-agent
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/workload/XNAME/dvs-map
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/dvs-map
         selectors:
           - type: unix
             value: uid:0
@@ -66,7 +66,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/dvs-map-spire-agent
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/workload/XNAME/dvs-hmi
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/dvs-hmi
         selectors:
           - type: unix
             value: uid:0
@@ -76,7 +76,7 @@ data:
             value: path:/usr/bin/dvs-hmi-spire-agent
   compute.yaml: |-
       ---
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/workload/XNAME/cpsmount_helper
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/cpsmount_helper
         selectors:
           - type: unix
             value: uid:0
@@ -84,7 +84,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/opt/cray/cps-utils/bin/cpsmount_helper
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/workload/XNAME/cpsmount
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/cpsmount
         selectors:
           - type: unix
             value: uid:0
@@ -92,7 +92,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/cpsmount-spire-agent
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/workload/XNAME/heartbeat
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/heartbeat
         selectors:
           - type: unix
             value: uid:0
@@ -100,7 +100,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/heartbeat-spire-agent
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/workload/XNAME/orca
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/orca
         selectors:
           - type: unix
             value: uid:0
@@ -108,7 +108,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/orca-spire-agent
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/workload/XNAME/ckdump_helper
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/ckdump_helper
         selectors:
           - type: unix
             value: uid:0
@@ -116,7 +116,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/ckdump_helper
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/workload/XNAME/ckdump
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/ckdump
         selectors:
           - type: unix
             value: uid:0
@@ -125,7 +125,7 @@ data:
           - type: unix
             value: path:/usr/bin/ckdump-spire-agent
         ttl: 864000
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/workload/XNAME/cfs-state-reporter
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/cfs-state-reporter
         selectors:
           - type: unix
             value: uid:0
@@ -133,7 +133,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/cfs-state-reporter-spire-agent
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/workload/XNAME/dvs-map
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/dvs-map
         selectors:
           - type: unix
             value: uid:0
@@ -141,7 +141,7 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/dvs-map-spire-agent
-      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/workload/XNAME/dvs-hmi
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/dvs-hmi
         selectors:
           - type: unix
             value: uid:0
