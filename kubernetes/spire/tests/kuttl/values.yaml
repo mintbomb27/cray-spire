@@ -10,7 +10,6 @@ server:
 
   registration:
     repository: artifactory.algol60.net/csm-docker/unstable/spire-tokens
-    tag: 0.4.0-20210811234445_d2e6ed2
 
   disableExternalCerts: true
 

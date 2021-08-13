@@ -26,6 +26,8 @@ server:
     ncnEntry: /ncn/tenant1
     ncnClusterEntry: /ncn
     tokenTTL: 10800
+    enableXNameWorkloads: true
+  annotations: {}
 
   init:
     repository: gcr.io/sdlc-ops/wait-for-it
@@ -51,6 +53,7 @@ server:
     accessModes:
     - ReadWriteOnce
     size: 1Gi
+    storageClass: ""
 
 cray-service:
   type: ""

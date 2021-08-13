@@ -91,7 +91,8 @@ spec:
               value: /compute
             - name: TTL
               value: "10800"
-          image: artifactory.algol60.net/csm-docker/unstable/spire-tokens:0.4.0-20210811234445_d2e6ed2
+            - name: ENABLE_XNAME_WORKLOADS
+              value: "true"
           imagePullPolicy: IfNotPresent
           name: spire-registration-server
           ports:

@@ -122,6 +122,8 @@ spec:
               value: "{{ .Values.server.tokenService.computeClusterEntry }}"
             - name: TTL
               value: "{{ .Values.server.tokenService.tokenTTL }}"
+            - name: ENABLE_XNAME_WORKLOADS
+              value: "{{ .Values.server.tokenService.enableXNameWorkloads }}"
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
           volumeMounts:
             - name: spire-shared-socket
