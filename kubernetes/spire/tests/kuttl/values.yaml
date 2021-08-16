@@ -9,7 +9,7 @@ server:
     repository: artifactory.algol60.net/docker.io/alpine
 
   registration:
-    repository: artifactory.algol60.net/csm-docker/unstable/spire-tokens
+    repository: artifactory.algol60.net/csm-docker/stable/spire-tokens
 
   disableExternalCerts: true
 
