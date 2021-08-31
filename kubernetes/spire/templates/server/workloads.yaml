@@ -165,3 +165,96 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/heartbeat-spire-agent
+  storage.yaml: |-
+      ---
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/storage/XNAME/workload/cfs-state-reporter
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/cfs-state-reporter-spire-agent
+  uan.yaml: |-
+      ---
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/cpsmount_helper
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/opt/cray/cps-utils/bin/cpsmount_helper
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/cpsmount
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/cpsmount-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/heartbeat
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/heartbeat-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/orca
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/orca-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/ckdump_helper
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/ckdump_helper
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/ckdump
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/ckdump-spire-agent
+        ttl: 864000
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/cfs-state-reporter
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/cfs-state-reporter-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/dvs-map
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/dvs-map-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/dvs-hmi
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/dvs-hmi-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/heartbeat
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/heartbeat-spire-agent

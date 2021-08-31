@@ -116,10 +116,18 @@ spec:
               value: "{{ .Values.server.tokenService.computeEntry }}"
             - name: NCN_ENTRY
               value: "{{ .Values.server.tokenService.ncnEntry }}"
+            - name: UAN_ENTRY
+              value: "{{ .Values.server.tokenService.uanEntry }}"
+            - name: STORAGE_ENTRY
+              value: "{{ .Values.server.tokenService.storageEntry }}"
             - name: NCN_CLUSTER_ENTRY
               value: "{{ .Values.server.tokenService.ncnClusterEntry }}"
             - name: COMPUTE_CLUSTER_ENTRY
               value: "{{ .Values.server.tokenService.computeClusterEntry }}"
+            - name: UAN_CLUSTER_ENTRY
+              value: "{{ .Values.server.tokenService.uanClusterEntry }}"
+            - name: STORAGE_CLUSTER_ENTRY
+              value: "{{ .Values.server.tokenService.storageClusterEntry }}"
             - name: TTL
               value: "{{ .Values.server.tokenService.tokenTTL }}"
             - name: ENABLE_XNAME_WORKLOADS

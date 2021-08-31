@@ -25,6 +25,10 @@ server:
     computeClusterEntry: /compute
     ncnEntry: /ncn/tenant1
     ncnClusterEntry: /ncn
+    storageEntry: /storage/tenant1
+    storageClusterEntry: /storage
+    uanEntry: /uan/tenant1
+    uanClusterEntry: /uan
     tokenTTL: 10800
     enableXNameWorkloads: true
   annotations: {}
@@ -46,7 +50,7 @@ server:
 
   registration:
     repository: dtr.dev.cray.com/cray/cray-spire-tokens
-    tag: 1.0.0
+    tag: 2.0.0
     pullPolicy: IfNotPresent
 
   persistentVolume:
