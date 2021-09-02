@@ -9,7 +9,7 @@ all: helmlint eval unittest test
 lint: helmlint eval unittest
 
 eval:
-	helm template -n opa cray-opa . > $(tmp_dir)/chart.yaml
+	helm template -n spire spire . > $(tmp_dir)/chart.yaml
 	docker run -it -v $(tmp_dir):/chart garethr/kubeval:0.15.0 --ignore-missing-schemas /chart/chart.yaml
 
 yamllint:
