@@ -118,6 +118,8 @@ data:
       -selector k8s:pod-label:app.kubernetes.io/name:spire-jwks \
       -selector k8s:container-name:spire-jwks
 
+    {{- if not .Values.server.tokenService.enableXNameWorkloads }}
+
     create \
       -parentID spiffe://{{ .Values.trustDomain }}/ncn \
       -spiffeID spiffe://{{ .Values.trustDomain }}/ncn/workload/cpsmount_helper \
@@ -128,6 +130,13 @@ data:
     create \
       -parentID spiffe://{{ .Values.trustDomain }}/compute \
       -spiffeID spiffe://{{ .Values.trustDomain }}/compute/workload/cpsmount_helper \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/opt/cray/cps-utils/bin/cpsmount_helper
+
+    create \
+      -parentID spiffe://{{ .Values.trustDomain }}/uan \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/uan/workload/cpsmount_helper \
       -selector unix:uid:0 \
       -selector unix:gid:0 \
       -selector unix:path:/opt/cray/cps-utils/bin/cpsmount_helper
@@ -147,8 +156,22 @@ data:
       -selector unix:path:/usr/bin/cpsmount-spire-agent
 
     create \
+      -parentID spiffe://{{ .Values.trustDomain }}/uan \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/uan/workload/cpsmount \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/usr/bin/cpsmount-spire-agent
+
+    create \
       -parentID spiffe://{{ .Values.trustDomain }}/compute \
       -spiffeID spiffe://{{ .Values.trustDomain }}/compute/workload/heartbeat \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/usr/bin/heartbeat-spire-agent
+
+    create \
+      -parentID spiffe://{{ .Values.trustDomain }}/uan \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/uan/workload/heartbeat \
       -selector unix:uid:0 \
       -selector unix:gid:0 \
       -selector unix:path:/usr/bin/heartbeat-spire-agent
@@ -168,6 +191,13 @@ data:
       -selector unix:path:/usr/bin/orca-spire-agent
 
     create \
+      -parentID spiffe://{{ .Values.trustDomain }}/uan \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/uan/workload/orca \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/usr/bin/orca-spire-agent
+
+    create \
       -parentID spiffe://{{ .Values.trustDomain }}/ncn \
       -spiffeID spiffe://{{ .Values.trustDomain }}/ncn/workload/orca \
       -selector unix:uid:0 \
@@ -177,6 +207,14 @@ data:
     create \
       -parentID spiffe://{{ .Values.trustDomain }}/compute \
       -spiffeID spiffe://{{ .Values.trustDomain }}/compute/workload/ckdump_helper \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/usr/sbin/ckdump_helper \
+      -ttl 864000
+
+    create \
+      -parentID spiffe://{{ .Values.trustDomain }}/uan \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/uan/workload/ckdump_helper \
       -selector unix:uid:0 \
       -selector unix:gid:0 \
       -selector unix:path:/usr/sbin/ckdump_helper \
@@ -206,6 +244,20 @@ data:
       -selector unix:path:/usr/bin/cfs-state-reporter-spire-agent
 
     create \
+      -parentID spiffe://{{ .Values.trustDomain }}/storage \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/storage/workload/cfs-state-reporter \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/usr/bin/cfs-state-reporter-spire-agent
+
+    create \
+      -parentID spiffe://{{ .Values.trustDomain }}/uan \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/uan/workload/cfs-state-reporter \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/usr/bin/cfs-state-reporter-spire-agent
+
+    create \
       -parentID spiffe://{{ .Values.trustDomain }}/ncn \
       -spiffeID spiffe://{{ .Values.trustDomain }}/ncn/workload/cfs-state-reporter \
       -selector unix:uid:0 \
@@ -227,6 +279,13 @@ data:
       -selector unix:path:/usr/bin/dvs-map-spire-agent
 
     create \
+      -parentID spiffe://{{ .Values.trustDomain }}/uan \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/uan/workload/dvs-map \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/usr/bin/dvs-map-spire-agent
+
+    create \
       -parentID spiffe://{{ .Values.trustDomain }}/ncn \
       -spiffeID spiffe://{{ .Values.trustDomain }}/ncn/workload/dvs-hmi \
       -selector unix:uid:0 \
@@ -240,4 +299,12 @@ data:
       -selector unix:gid:0 \
       -selector unix:path:/usr/bin/dvs-hmi-spire-agent
 
+    create \
+      -parentID spiffe://{{ .Values.trustDomain }}/uan \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/uan/workload/dvs-hmi \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/usr/bin/dvs-hmi-spire-agent
+
+    {{- end }}
     exit 0
