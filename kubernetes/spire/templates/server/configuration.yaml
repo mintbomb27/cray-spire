@@ -306,5 +306,12 @@ data:
       -selector unix:gid:0 \
       -selector unix:path:/usr/bin/dvs-hmi-spire-agent
 
+    create \
+      -parentID spiffe://{{ .Values.trustDomain }}/compute \
+      -spiffeID spiffe://{{ .Values.trustDomain }}/compute/workload/wlm \
+      -selector unix:uid:0 \
+      -selector unix:gid:0 \
+      -selector unix:path:/usr/bin/wlm-spire-agent
+
     {{- end }}
     exit 0

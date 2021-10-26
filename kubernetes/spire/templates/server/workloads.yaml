@@ -165,6 +165,14 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/heartbeat-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/wlm
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/wlm-spire-agent
   storage.yaml: |-
       ---
       - spiffeID: spiffe://{{ .Values.trustDomain }}/storage/XNAME/workload/cfs-state-reporter
