@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: access-spire
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ template "spire.name" . }}-server
+  policyTypes:
+    - Ingress
+  ingress:
+    # BSS Access to request tokens for compute and UANs
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: services
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: cray-bss
+      ports:
+        - protocol: TCP
+          port: 54440
+    # request-ncn-join-token joins kubernetes NCNs via a daemonset
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: spire
+      - podSelector:
+          matchLabels:
+            name: request-ncn-join-token
+      ports:
+        - protocol: TCP
+          port: 54440
+    # Allow access to spire server from anywhere.
+    - from: []
+      ports:
+        - protocol: TCP
+          port: 8081
