@@ -30,7 +30,7 @@ server:
     uanEntry: /uan/tenant1
     uanClusterEntry: /uan
     tokenTTL: 10800
-    enableXNameWorkloads: false
+    enableXNameWorkloads: true
   annotations: {}
 
   init:
