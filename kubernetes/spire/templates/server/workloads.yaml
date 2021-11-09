@@ -50,6 +50,14 @@ data:
           - type: unix
             value: path:/usr/bin/ckdump-spire-agent
         ttl: 864000
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/bos-state-reporter
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/bos-state-reporter-spire-agent
       - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/cfs-state-reporter
         selectors:
           - type: unix
@@ -133,6 +141,14 @@ data:
           - type: unix
             value: path:/usr/bin/ckdump-spire-agent
         ttl: 864000
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/bos-state-reporter
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/bos-state-reporter-spire-agent
       - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/cfs-state-reporter
         selectors:
           - type: unix
@@ -234,6 +250,14 @@ data:
           - type: unix
             value: path:/usr/bin/ckdump-spire-agent
         ttl: 864000
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/bos-state-reporter
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/bos-state-reporter-spire-agent
       - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/cfs-state-reporter
         selectors:
           - type: unix
