@@ -9,23 +9,19 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # BSS Access to request tokens for compute and UANs
     - from:
+      # BSS Access to request tokens for compute and UANs
       - namespaceSelector:
           matchLabels:
             name: services
-      - podSelector:
+        podSelector:
           matchLabels:
             app.kubernetes.io/name: cray-bss
-      ports:
-        - protocol: TCP
-          port: 54440
-    # request-ncn-join-token joins kubernetes NCNs via a daemonset
-    - from:
+      # request-ncn-join-token joins kubernetes NCNs via a daemonset
       - namespaceSelector:
           matchLabels:
             name: spire
-      - podSelector:
+        podSelector:
           matchLabels:
             name: request-ncn-join-token
       ports:
