@@ -19,11 +19,22 @@ spec:
       labels:
         app.kubernetes.io/name: {{ template "spire.name" . }}-agent
     spec:
-      hostPID: true
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       serviceAccountName: {{ template "spire.name" . }}-agent
       initContainers:
+        - name: init-setperms
+          image: "{{ .Values.agent.init.repository }}:{{ .Values.agent.init.tag }}"
+          command:
+            - '/bin/sh'
+          args:
+            - '-x'
+            - '-c'
+            - 'chown -R 65534:65534 /run/spire/sockets'
+          volumeMounts:
+            - name: {{ template "spire.name" . }}-socket
+              mountPath: /run/spire/sockets
+              readOnly: false
         - name: init
           # This is a small image with wait-for-it, choose whatever image
           # you prefer that waits for a service to be up. This image is built
@@ -33,6 +44,10 @@ spec:
           args: ["-t", "30", "spire-server:{{ .Values.server.port }}"]
       containers:
         - name: {{ template "spire.name" . }}
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
           image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
           args: ["-config", "/run/spire/config/spire-agent.conf"]
