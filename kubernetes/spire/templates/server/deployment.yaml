@@ -38,6 +38,25 @@ spec:
                        - {{ include "spire.name" . }}-server
                    topologyKey: kubernetes.io/hostname
       initContainers:
+        - name: init-setperms
+          image: "{{ .Values.server.init2.repository }}:{{ .Values.server.init2.tag }}"
+          imagePullPolicy: {{ .Values.server.init2.pullPolicy }}
+          command:
+            - '/bin/sh'
+          args:
+            - '-x'
+            - '-c'
+            - 'chown -R 65534:65534 /run/spire/server /shared-socket /run/spire/data'
+          volumeMounts:
+            - name: spire-server
+              mountPath: /run/spire/server
+              readOnly: false
+            - name: spire-shared-socket
+              mountPath: /shared-socket
+              readOnly: false
+            - name: spire-data
+              mountPath: /run/spire/data
+              readOnly: false
         - name: init
           # This is a small image with wait-for-it, choose whatever image
           # you prefer that waits for a service to be up. This image is built
@@ -63,6 +82,10 @@ spec:
         - name: {{ include "spire.name" . }}-server
           image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
           imagePullPolicy: {{ .Values.server.image.pullPolicy }}
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true 
           env:
             # This env is used to restart pod when this configuration option changes
             - name: connectionPooler
@@ -109,6 +132,10 @@ spec:
         - name: {{ include "spire.name" . }}-registration-server
           image: "{{ .Values.server.registration.repository }}:{{ .Values.server.registration.tag }}"
           imagePullPolicy: {{ .Values.server.registration.pullPolicy }}
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true 
           env:
             - name: SPIRE_DOMAIN
               value: "{{ .Values.trustDomain }}"
