@@ -24,7 +24,8 @@ spec:
       serviceAccountName: {{ template "spire.name" . }}-agent
       initContainers:
         - name: init-setperms
-          image: "{{ .Values.agent.init.repository }}:{{ .Values.agent.init.tag }}"
+          image: "{{ .Values.agent.init2.repository }}:{{ .Values.agent.init2.tag }}"
+          imagePullPolicy: {{ .Values.agent.init2.pullPolicy }}
           command:
             - '/bin/sh'
           args:

@@ -39,7 +39,8 @@ spec:
                    topologyKey: kubernetes.io/hostname
       initContainers:
         - name: init-setperms
-          image: "{{ .Values.server.init.repository }}:{{ .Values.server.init.tag }}"
+          image: "{{ .Values.server.init2.repository }}:{{ .Values.server.init2.tag }}"
+          imagePullPolicy: {{ .Values.server.init2.pullPolicy }}
           command:
             - '/bin/sh'
           args:

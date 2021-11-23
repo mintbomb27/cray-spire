@@ -105,6 +105,11 @@ agent:
     tag: "20210322"
     pullPolicy: IfNotPresent
 
+  init2:
+    repository: dtr.dev.cray.com/baseos/alpine
+    tag: 3.11.5
+    pullPolicy: IfNotPresent
+
   image:
     repository: gcr.io/spiffe-io/spire-agent
     tag: 0.12.2
