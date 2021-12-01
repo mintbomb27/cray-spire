@@ -19,15 +19,15 @@ annotations:
     - name: spire-tokens
       image: artifactory.algol60.net/csm-docker/stable/spire-tokens:2.0.0
     - name: wait-for-it
-      images: artifactory.algol60.net/csm-docker/stable/sdlc-ops/wait-for-it:20211201
+      image: artifactory.algol60.net/csm-docker/stable/sdlc-ops/wait-for-it:20211201
     - name: alpine
       image: alpine:3.14
     - name: curl
-      images: artifactory.algol60.net/csm-docker/stable/docker.io/curlimages/curl:7.80.0
+      image: artifactory.algol60.net/csm-docker/stable/docker.io/curlimages/curl:7.80.0
     - name: nginx
       image: artifactory.algol60.net/csm-docker/stable/docker.io/library/nginx:1.18.0-alpine
     - name: pause
-      images: k8s.gcr.io/pause:3.2
+      image: k8s.gcr.io/pause:3.2
     - name: postgres
       image: artifactory.algol60.net/csm-docker/stable/docker.io/library/postgres:13.2-alpine
     - name: postgres-db-backup
