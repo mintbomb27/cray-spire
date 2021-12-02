@@ -15,6 +15,7 @@ spec:
       min: 1
     rule: MustRunAs
   hostNetwork: true
+  hostPID: true
   privileged: true
   runAsUser:
     rule: RunAsAny

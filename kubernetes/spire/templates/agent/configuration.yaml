@@ -8,7 +8,7 @@ metadata:
 data:
   spire-agent.conf: |-
     agent {
-      data_dir = "/run/spire"
+      data_dir = "/tmp/spire"
       log_level = "{{ .Values.agent.logLevel }}"
       server_address = "spire-server"
       server_port = "{{ .Values.server.port }}"
