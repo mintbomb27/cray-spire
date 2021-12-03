@@ -2,8 +2,8 @@ nameOverride: ""
 
 global:
   chart:
-    name: "" # set at deploy time automatically, no need to ever set explicitly
-    version: "" # set at deploy time automatically, no need to ever set explicitly
+    name: ""     # set at deploy time automatically, no need to ever set explicitly
+    version: ""  # set at deploy time automatically, no need to ever set explicitly
 
 trustDomain: shasta
 
@@ -34,22 +34,22 @@ server:
   annotations: {}
 
   init:
-    repository: gcr.io/sdlc-ops/wait-for-it
-    tag: "20210322"
+    repository: artifactory.algol60.net/csm-docker/stable/sdlc-ops/wait-for-it
+    tag: "20211201"
     pullPolicy: IfNotPresent
 
   init2:
-    repository: dtr.dev.cray.com/baseos/alpine
-    tag: 3.11.5
+    repository: alpine
+    tag: 3.14
     pullPolicy: IfNotPresent
 
   image:
-    repository: gcr.io/spiffe-io/spire-server
+    repository: artifactory.algol60.net/csm-docker/stable/gcr.io/spiffe-io/spire-server
     tag: 0.12.2
     pullPolicy: IfNotPresent
 
   registration:
-    repository: dtr.dev.cray.com/cray/spire-tokens
+    repository: artifactory.algol60.net/csm-docker/stable/spire-tokens
     tag: 2.0.0
     pullPolicy: IfNotPresent
 
@@ -91,7 +91,7 @@ cray-service:
       statement_timeout: "60000"
     backup:
       enabled: true
-      schedule: "10 3 * * *" # Once per day at 3:10AM
+      schedule: "10 3 * * *"  # Once per day at 3:10AM
 
 tls:
   issuer: cert-manager-issuer-common
@@ -101,17 +101,17 @@ agent:
   wlSocket: /run/spire/vshastaio/sockets
 
   init:
-    repository: gcr.io/sdlc-ops/wait-for-it
-    tag: "20210322"
+    repository: artifactory.algol60.net/csm-docker/stable/sdlc-ops/wait-for-it
+    tag: "20211201"
     pullPolicy: IfNotPresent
 
   init2:
-    repository: dtr.dev.cray.com/baseos/alpine
-    tag: 3.11.5
+    repository: alpine
+    tag: 3.14
     pullPolicy: IfNotPresent
 
   image:
-    repository: gcr.io/spiffe-io/spire-agent
+    repository: artifactory.algol60.net/csm-docker/stable/gcr.io/spiffe-io/spire-agent
     tag: 0.12.2
     pullPolicy: IfNotPresent
 
@@ -124,13 +124,13 @@ jwks:
   priorityClassName: csm-high-priority-service
 
   image:
-    repository: dtr.dev.cray.com/cray/cray-spire-jwks
-    tag: 0.1.0
+    repository: artifactory.algol60.net/csm-docker/stable/cray-spire-jwks
+    tag: 0.1.1
     pullPolicy: IfNotPresent
 
   nginx:
-    repository: cache/nginx
-    tag: 1.18.0
+    repository: artifactory.algol60.net/csm-docker/stable/docker.io/library/nginx
+    tag: 1.18.0-alpine
     pullPolicy: IfNotPresent
 
 bundle:
@@ -141,26 +141,26 @@ bundle:
   replicaCount: 3
 
   image:
-    repository: dtr.dev.cray.com/cray/cray-spire-bundle
-    tag: 0.1.0
+    repository: artifactory.algol60.net/csm-docker/stable/spire-bundle
+    tag: 0.2.0
     pullPolicy: IfNotPresent
 
 bss:
   endpoint: http://cray-bss.services.svc.cluster.local/boot/v1/bootparameters
   curl:
-    repository: curlimages/curl
-    tag: 7.73.0
+    repository: artifactory.algol60.net/csm-docker/stable/docker.io/curlimages/curl
+    tag: 7.80.0
 
 ncn:
   url: https://spire-tokens.spire:54440/api/token
   filename: join_token
   path: /root/spire/conf
   init:
-    repository: dtr.dev.cray.com/baseos/alpine
-    tag: 3.12
+    repository: alpine
+    tag: 3.14
   curl:
-    repository: curlimages/curl
-    tag: 7.73.0
+    repository: artifactory.algol60.net/csm-docker/stable/docker.io/curlimages/curl
+    tag: 7.80.0
   pause:
     repository: k8s.gcr.io/pause
     tag: 3.2
