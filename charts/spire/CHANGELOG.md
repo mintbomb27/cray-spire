@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [2.0.0]
+### Changed
+- Update pgbouncer to master-19 for CVE remediation (CASMPET-5202)
+
 ## [1.2.0]
 ### Changed
 - Added external-dns support (CASMPET-3939)
