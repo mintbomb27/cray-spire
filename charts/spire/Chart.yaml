@@ -1,11 +1,11 @@
 apiVersion: v2
 name: spire
-version: 2.0.0
+version: 2.1.0
 description: A Helm chart for spire
 home: https://github.com/Cray-HPE/cray-spire
 dependencies:
   - name: cray-service
-    version: ~8.0.0
+    version: ~8.1.0
     repository: https://artifactory.algol60.net/artifactory/csm-helm-charts
 maintainers:
   - name: kburns-hpe
