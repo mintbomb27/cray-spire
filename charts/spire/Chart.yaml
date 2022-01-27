@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright [2022] Hewlett Packard Enterprise Development LP
+# (C) Copyright 2022 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -23,7 +23,7 @@
 #
 apiVersion: v2
 name: spire
-version: 2.1.0
+version: 2.2.0
 description: A Helm chart for spire
 home: https://github.com/Cray-HPE/cray-spire
 dependencies:
