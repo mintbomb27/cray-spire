@@ -1,0 +1,122 @@
+{{/*
+MIT License
+
+(C) Copyright 2022 Hewlett Packard Enterprise Development LP
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+*/}}
+{{/*
+This hook updates the spooler deployment with pod antiaffinity. This is here
+because the postgres operator doesn't update the deployment automatically. It
+can be removed next release if we don't support skipping this release when
+upgrading.
+*/}}
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "spire.fullname" . }}-pooler-affinity-hook
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "patch"]
+
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: {{ template "spire.fullname" . }}-pooler-affinity-hook
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "spire.fullname" . }}-pooler-affinity-hook
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "spire.fullname" . }}-pooler-affinity-hook
+roleRef:
+  kind: Role
+  name: {{ template "spire.fullname" . }}-pooler-affinity-hook
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "spire.fullname" . }}-pooler-affinity-hook
+  labels:
+{{ include "spire.common-labels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  template:
+    metadata:
+      name: {{ template "spire.fullname" . }}-node-exporter-hook
+      labels:
+{{ include "spire.common-labels" . | indent 8 }}
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      serviceAccountName: {{ template "spire.fullname" . }}-pooler-affinity-hook
+      restartPolicy: Never
+      containers:
+        - name: post-install-job
+          image: {{ .Values.kubectl.image.repository }}:{{ .Values.kubectl.image.tag }}
+          imagePullPolicy: {{ .Values.kubectl.image.pullPolicy }}
+          command:
+            - kubectl
+            - patch
+            - deployment
+            - -n
+            - {{ .Release.Namespace }}
+            - spire-postgres-pooler
+            - -p
+            - |
+              {
+                "spec": {
+                  "strategy": {"rollingUpdate": {"maxSurge": 0}},
+                  "template": {
+                    "spec": {
+                      "affinity": {
+                        "podAntiAffinity": {
+                          "requiredDuringSchedulingIgnoredDuringExecution": [
+                            {
+                              "labelSelector": {
+                                "matchLabels": {
+                                  "application": "db-connection-pooler",
+                                  "cluster-name": "spire-postgres",
+                                  "connection-pooler": "spire-postgres-pooler"
+                                }
+                              },
+                              "topologyKey": "kubernetes.io/hostname"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+          securityContext:
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534

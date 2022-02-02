@@ -187,3 +187,9 @@ ncn:
   pause:
     repository: k8s.gcr.io/pause
     tag: 3.2
+
+kubectl:
+  image:
+    repository: artifactory.algol60.net/csm-docker/stable/docker-kubectl
+    tag: 1.19.15
+    pullPolicy: IfNotPresent
