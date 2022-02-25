@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [2.3.1]
+### Changed
+- Bump spire chart version to pull in changes in cray-service 8.1.2 for CVE remediation (CASMINST-4082)
+
 ## [2.0.0]
 ### Changed
 - Update pgbouncer to master-19 for CVE remediation (CASMPET-5202)
