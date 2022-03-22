@@ -31,4 +31,4 @@ metadata:
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
-  verbs: ["create", "list"]
+  verbs: ["create", "list", "get", "delete"]
