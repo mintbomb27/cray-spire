@@ -23,14 +23,14 @@
 #
 apiVersion: v2
 name: spire-intermediate
-version: 0.4.1
+version: 0.5.0
 description: A Helm chart for Kubernetes
 home: https://github.com/Cray-HPE/cray-spire
 maintainers:
   - name: kburns-hpe
-appVersion: 0.3.1
+appVersion: 1.0.0
 annotations:
   artifacthub.io/images: |-
     - name: spire-intermediate
-      image: artifactory.algol60.net/csm-docker/stable/spire-intermediate:0.3.1
+      image: artifactory.algol60.net/csm-docker/stable/spire-intermediate:1.0.0
   artifacthub.io/license: MIT

@@ -21,14 +21,36 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
+apiVersion: batch/v1beta1
+kind: CronJob
 metadata:
   name: {{ include "spire-intermediate.fullname" . }}
   labels:
     app.kubernetes.io/name: {{ template "spire-intermediate.name" . }}
     {{- include "spire-intermediate.common-labels" . | nindent 4 }}
-rules:
-- apiGroups: [""]
-  resources: ["secrets"]
-  verbs: ["create", "list", "get", "delete"]
+spec:
+  schedule: "0 0 * * 1"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+        {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
+          serviceAccountName: {{ include "spire-intermediate.fullname" . }}
+          containers:
+          - name: {{ include "spire-intermediate.fullname" . }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            env:
+              - name: VAULT_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: cray-vault-unseal-keys
+                    key: vault-root
+              - name: PKI_PATH
+                value: "{{ .Values.vaultPKIPath }}"
+              - name: NAMESPACES
+                value: "{{ .Values.namespaces }}"

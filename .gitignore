@@ -1,4 +1,4 @@
 .DS_Store
 .vscode
-kubernetes/spire/charts
 kubeconfig
+charts/*/charts
