@@ -26,7 +26,8 @@ server:
   disableServiceMonitor: true
   replicaCount: 1
   init:
-    repository: arti.dev.cray.com/third-party-docker-stable-local/sdlc-ops/wait-for-it
+    repository: artifactory.algol60.net/csm-docker/stable/sdlc-ops/wait-for-it
+    tag: "1.0.0"
 
   init2:
     repository: artifactory.algol60.net/docker.io/alpine
@@ -38,7 +39,8 @@ server:
 
 agent:
   init:
-    repository: arti.dev.cray.com/third-party-docker-stable-local/sdlc-ops/wait-for-it
+    repository: artifactory.algol60.net/csm-docker/stable/sdlc-ops/wait-for-it
+    tag: "1.0.0"
 
 cray-service:
   sqlCluster:
@@ -59,7 +61,8 @@ cray-service:
 
 
   init:
-    repository: arti.dev.cray.com/third-party-docker-stable-local/sdlc-ops/wait-for-it
+    repository: artifactory.algol60.net/csm-docker/stable/sdlc-ops/wait-for-it
+    tag: "1.0.0"
 
 jwks:
   replicaCount: 1

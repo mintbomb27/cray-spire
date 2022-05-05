@@ -83,7 +83,7 @@ spec:
         - name: init
           # This is a small image with wait-for-it, choose whatever image
           # you prefer that waits for a service to be up. This image is built
-          # from https://github.com/lqhl/wait-for-it
+          # from https://github.com/Cray-HPE/container-images
           image: "{{ .Values.server.init.repository }}:{{ .Values.server.init.tag }}"
           imagePullPolicy: {{ .Values.server.init.pullPolicy }}
           args: ["-t", "30", "{{ include "spire.fullname" . }}-postgres:5432"]

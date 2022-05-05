@@ -140,7 +140,7 @@ spec:
             - -t
             - "30"
             - spire-postgres:5432
-          image: arti.dev.cray.com/third-party-docker-stable-local/sdlc-ops/wait-for-it:20210322
+          image: artifactory.algol60.net/csm-docker/stable/sdlc-ops/wait-for-it:1.0.0
           imagePullPolicy: IfNotPresent
           name: init
           resources: {}

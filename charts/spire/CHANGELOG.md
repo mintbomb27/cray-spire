@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [2.5.0]
+### Changed
+- Bump spire chart version to use spire-tokens:2.1.0 for CVE remediation (CASMINST-4505)
+
 ## [2.3.1]
 ### Changed
 - Bump spire chart version to pull in changes in cray-service 8.1.2 for CVE remediation (CASMINST-4082)
