@@ -172,7 +172,7 @@ data:
 
     {{- if not .Values.server.tokenService.enableXNameWorkloads }}
 
-    create_if_new compute bos-state-reporter /usr/bin/bos-state-reporter-spire-agent
+    create_if_new compute bos-reporter /usr/bin/bos-reporter-spire-agent
     create_if_new compute cfs-state-reporter /usr/bin/cfs-state-reporter-spire-agent
     create_if_new compute ckdump /usr/bin/ckdump-spire-agent 864000
     create_if_new compute ckdump_helper /usr/sbin/ckdump_helper 864000
@@ -184,7 +184,7 @@ data:
     create_if_new compute orca /usr/bin/orca-spire-agent
     create_if_new compute wlm /usr/bin/wlm-spire-agent
 
-    create_if_new ncn bos-state-reporter /usr/bin/bos-state-reporter-spire-agent
+    create_if_new ncn bos-reporter /usr/bin/bos-reporter-spire-agent
     create_if_new ncn cfs-state-reporter /usr/bin/cfs-state-reporter-spire-agent
     create_if_new ncn cpsmount /usr/bin/cpsmount-spire-agent
     create_if_new ncn cpsmount_helper /opt/cray/cps-utils/bin/cpsmount_helper
@@ -195,7 +195,7 @@ data:
 
     create_if_new storage cfs-state-reporter /usr/bin/cfs-state-reporter-spire-agent
 
-    create_if_new uan bos-state-reporter /usr/bin/bos-state-reporter-spire-agent
+    create_if_new uan bos-reporter /usr/bin/bos-reporter-spire-agent
     create_if_new uan cfs-state-reporter /usr/bin/cfs-state-reporter-spire-agent
     create_if_new uan ckdump /usr/bin/ckdump-spire-agent 864000
     create_if_new uan ckdump_helper /usr/sbin/ckdump_helper 864000
