@@ -98,18 +98,22 @@ spec:
                     "spec": {
                       "affinity": {
                         "podAntiAffinity": {
-                          "requiredDuringSchedulingIgnoredDuringExecution": [
-                            {
-                              "labelSelector": {
-                                "matchLabels": {
-                                  "application": "db-connection-pooler",
-                                  "cluster-name": "spire-postgres",
-                                  "connection-pooler": "spire-postgres-pooler"
-                                }
-                              },
-                              "topologyKey": "kubernetes.io/hostname"
-                            }
-                          ]
+                           "requiredDuringSchedulingIgnoredDuringExecution": [
+                              {
+                                  "labelSelector": {
+                                      "matchExpressions": [
+                                          {
+                                              "key": "app.kubernetes.io/name",
+                                              "operator": "In",
+                                              "values": [
+                                                  "spire-jwks"
+                                              ]
+                                          }
+                                      ]
+                                  },
+                                  "topologyKey": "kubernetes.io/hostname"
+                              }
+                            ]
                         }
                       }
                     }

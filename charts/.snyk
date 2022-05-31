@@ -5,11 +5,11 @@ ignore:
   SNYK-CC-K8S-16:
     - '*':
         reason: Requires analysis
-        expires: 2022-03-01T00:00:00.000Z
+        expires: 2022-09-01T00:00:00.000Z
         created: 2021-12-01T07:01:38.702Z
   SNYK-CC-K8S-43:
     - '*':
-        reason: Requires analysis
-        expires: 2022-03-01T00:00:00.000Z
+        reason: computes need to talk directly to spire in order to avoid NAT IP issues
+        expires: 2031-01-01T00:00:00.000Z
         created: 2021-12-01T07:01:43.788Z
 patch: {}

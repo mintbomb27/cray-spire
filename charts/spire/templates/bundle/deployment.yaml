@@ -47,16 +47,14 @@ spec:
       serviceAccountName: {{ include "spire.name" . }}-bundle
       affinity:
           podAntiAffinity:
-             preferredDuringSchedulingIgnoredDuringExecution:
-               - weight: 1
-                 podAffinityTerm:
-                   labelSelector:
-                     matchExpressions:
-                     - key: app
-                       operator: In
-                       values:
-                       - {{ include "spire.name" . }}-bundle
-                   topologyKey: kubernetes.io/hostname
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                    - {{ include "spire.name" . }}-bundle
+              topologyKey: kubernetes.io/hostname
       containers:
         - name: {{ template "spire.name" . }}-bundle
           image: "{{ .Values.bundle.image.repository }}:{{ .Values.bundle.image.tag | default .Chart.AppVersion }}"

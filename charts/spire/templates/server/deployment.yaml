@@ -50,16 +50,14 @@ spec:
 {{- end }}
       affinity:
           podAntiAffinity:
-             preferredDuringSchedulingIgnoredDuringExecution:
-               - weight: 1
-                 podAffinityTerm:
-                   labelSelector:
-                     matchExpressions:
-                     - key: app
-                       operator: In
-                       values:
+             requiredDuringSchedulingIgnoredDuringExecution:
+               - labelSelector:
+                   matchExpressions:
+                   - key: app
+                     operator: In
+                     values:
                        - {{ include "spire.name" . }}-server
-                   topologyKey: kubernetes.io/hostname
+                 topologyKey: kubernetes.io/hostname
       initContainers:
         - name: init-setperms
           image: "{{ .Values.server.init2.repository }}:{{ .Values.server.init2.tag }}"
@@ -108,7 +106,7 @@ spec:
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
-            runAsNonRoot: true 
+            runAsNonRoot: true
           env:
             # This env is used to restart pod when this configuration option changes
             - name: connectionPooler
@@ -158,7 +156,7 @@ spec:
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
-            runAsNonRoot: true 
+            runAsNonRoot: true
           env:
             - name: SPIRE_DOMAIN
               value: "{{ .Values.trustDomain }}"
