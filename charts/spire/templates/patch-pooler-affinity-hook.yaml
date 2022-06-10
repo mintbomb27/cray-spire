@@ -27,7 +27,7 @@ because the postgres operator doesn't update the deployment automatically. It
 can be removed next release if we don't support skipping this release when
 upgrading.
 */}}
-
+{{ $uuid := uuidv4 }}
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
@@ -95,6 +95,11 @@ spec:
                 "spec": {
                   "strategy": {"rollingUpdate": {"maxSurge": 0}},
                   "template": {
+                    "metadata": {
+                      "labels": {
+                        "deployment/uuid": "{{ $uuid }}"
+                      }
+                    },
                     "spec": {
                       "affinity": {
                         "podAntiAffinity": {
@@ -103,10 +108,10 @@ spec:
                                   "labelSelector": {
                                       "matchExpressions": [
                                           {
-                                              "key": "app.kubernetes.io/name",
+                                              "key": "deployment/uuid",
                                               "operator": "In",
                                               "values": [
-                                                  "spire-jwks"
+                                                  "{{ $uuid }}"
                                               ]
                                           }
                                       ]
