@@ -32,7 +32,7 @@ spec:
   - NET_RAW
   allowedHostPaths:
   - pathPrefix: /run/spire
-  - pathPrefix: /root/spire/conf
+  - pathPrefix: "{{ .Values.ncn.path }}/conf"
   fsGroup:
     ranges:
     - max: 65535

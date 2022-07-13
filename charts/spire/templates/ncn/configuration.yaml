@@ -31,12 +31,12 @@ metadata:
 data:
   spire-agent.conf: |-
     agent {
-      data_dir = "/root/spire"
+      data_dir = "{{ .Values.ncn.path }}"
       log_level = "INFO"
       server_address = "{{ .Values.server.fqdn }}"
       server_port = "8081"
-      socket_path = "/root/spire/agent.sock"
-      trust_bundle_path = "/root/spire/conf/bundle.crt"
+      socket_path = "{{ .Values.ncn.path }}/agent.sock"
+      trust_bundle_path = "{{ .Values.ncn.path }}/conf/bundle.crt"
       trust_domain = "{{ .Values.trustDomain }}"
       join_token = "$join_token"
     }
@@ -48,7 +48,7 @@ data:
 
       KeyManager "disk" {
         plugin_data {
-            directory = "/root/spire/data"
+            directory = "{{ .Values.ncn.path }}/data"
         }
       }
 

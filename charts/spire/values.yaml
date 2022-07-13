@@ -29,6 +29,7 @@ global:
     version: ""  # set at deploy time automatically, no need to ever set explicitly
 
 trustDomain: shasta
+vshasta: false
 
 server:
   replicaCount: 3
@@ -63,7 +64,7 @@ server:
 
   init2:
     repository: alpine
-    tag: 3.14
+    tag: 3.16
     pullPolicy: IfNotPresent
 
   image:
@@ -78,7 +79,7 @@ server:
 
   persistentVolume:
     accessModes:
-    - ReadWriteOnce
+      - ReadWriteOnce
     size: 1Gi
     storageClass: ""
 
@@ -130,7 +131,7 @@ agent:
 
   init2:
     repository: alpine
-    tag: 3.14
+    tag: 3.16
     pullPolicy: IfNotPresent
 
   image:
@@ -177,10 +178,10 @@ bss:
 ncn:
   url: https://spire-tokens.spire:54440/api/token
   filename: join_token
-  path: /root/spire/conf
+  path: /var/lib/spire
   init:
     repository: alpine
-    tag: 3.14
+    tag: 3.16
   curl:
     repository: artifactory.algol60.net/csm-docker/stable/docker.io/curlimages/curl
     tag: 7.80.0
