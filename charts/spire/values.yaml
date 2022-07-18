@@ -186,8 +186,8 @@ ncn:
     repository: artifactory.algol60.net/csm-docker/stable/docker.io/curlimages/curl
     tag: 7.80.0
   pause:
-    repository: k8s.gcr.io/pause
-    tag: 3.2
+    repository: artifactory.algol60.net/csm-docker/stable/k8s.gcr.io/pause
+    tag: 3.4.1
 
 kubectl:
   image:
