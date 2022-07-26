@@ -130,7 +130,7 @@ data:
             -selector unix:gid:0 \
             -selector unix:path:${agentPath} \
             -ttl ${ttl} || echo "Entry creation failed: $@"
-        else 
+        else
           ./bin/spire-server entry create \
             -parentID spiffe://{{ .Values.trustDomain }}/${type} \
             -spiffeID spiffe://{{ .Values.trustDomain }}/${type}/workload/${workload} \
@@ -194,6 +194,7 @@ data:
     create_if_new ncn orca /usr/bin/orca-spire-agent
 
     create_if_new storage cfs-state-reporter /usr/bin/cfs-state-reporter-spire-agent
+    create_if_new storage heartbeat /usr/bin/heartbeat-spire-agent
 
     create_if_new uan bos-reporter /usr/bin/bos-reporter-spire-agent
     create_if_new uan cfs-state-reporter /usr/bin/cfs-state-reporter-spire-agent

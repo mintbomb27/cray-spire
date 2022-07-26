@@ -222,6 +222,14 @@ data:
             value: gid:0
           - type: unix
             value: path:/usr/bin/cfs-state-reporter-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/storage/XNAME/workload/heartbeat
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/usr/bin/heartbeat-spire-agent
   uan.yaml: |-
       ---
       - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/cpsmount_helper
