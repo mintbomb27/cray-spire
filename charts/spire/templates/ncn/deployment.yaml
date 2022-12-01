@@ -21,6 +21,13 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
+{{- define "getXname" -}}
+{{- if $.Values.vshasta }}
+echo ${NODE_NAME} | tr -d \-
+{{ else }}
+cat /proc/cmdline | sed "s/.*xname=\([A-Za-z0-9]*\).*/\1/"
+{{ end }}
+{{ end }}
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -63,11 +70,7 @@ spec:
           args:
             - '-x'
             - '-c'
-            {{ if .Values.vshasta }}
-            - 'while ! curl -k -X POST -d "xname=$(echo ${NODE_NAME} | tr -d \-)" "$URL" > /tmp/token; do sleep 5; done; if ! grep -qi error /tmp/token; then echo "join_token=$(cat /tmp/token | cut -d\" -f4)" > "/token/{{ .Values.ncn.filename }}";fi; cat /config/spire-agent.conf > /token/spire-agent.conf ; while true; do if test -e /bundle/bundle.crt; then cat /bundle/bundle.crt > /token/bundle.crt; break; fi; sleep 10; done'
-           {{ else }}
-            - 'while ! curl -k -X POST -d type=ncn\&xname=$(cat /proc/cmdline | sed "s/.*xname=\([A-Za-z0-9]*\).*/\1/") "$URL" > /tmp/token; do sleep 5; done; if ! grep -qi error /tmp/token; then echo "join_token=$(cat /tmp/token | cut -d\" -f4)" > "/token/{{ .Values.ncn.filename }}";fi; cat /config/spire-agent.conf > /token/spire-agent.conf ; while true; do if test -e /bundle/bundle.crt; then cat /bundle/bundle.crt > /token/bundle.crt; break; fi; sleep 10; done'
-           {{ end }}
+            - 'count=0; while [ $count -lt 6 ]; do if ! curl -k -X POST -d type=ncn\&xname=$({{ template "getXname" . }}) "$URL" > /tmp/token; then sleep 5; count=$((count + 1)); else break; fi; done; if [ $count -eq 6 ]; then exit 1; fi; if ! grep -qiE "error|invalid" /tmp/token; then echo "join_token=$(cat /tmp/token | cut -d\" -f4)" > "/token/{{ .Values.ncn.filename }}"; else exit 2;fi; cat /config/spire-agent.conf > /token/spire-agent.conf ; while ! [ -e /bundle/bundle.crt ]; do sleep 10; done; cat /bundle/bundle.crt > /token/bundle.crt'
           env:
             - name: NODE_NAME
               valueFrom:
