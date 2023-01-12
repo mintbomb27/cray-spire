@@ -25,7 +25,7 @@ nameOverride: ""
 
 global:
   chart:
-    name: ""     # set at deploy time automatically, no need to ever set explicitly
+    name: ""  # set at deploy time automatically, no need to ever set explicitly
     version: ""  # set at deploy time automatically, no need to ever set explicitly
 
 trustDomain: shasta

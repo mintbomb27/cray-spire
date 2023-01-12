@@ -24,26 +24,24 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestSuite
 commands:
-- command: helm repo add cray-csm https://arti.dev.cray.com/artifactory/csm-helm-stable-local/
-  ignoreFailure: true
-- command: kubectl create ns ceph-rgw
-- command: kubectl create ns cert-manager-init
-- command: kubectl create ns istio-system
-- command: kubectl create ns opa
-- command: kubectl create ns services
-- command: kubectl create ns sma
-- command: kubectl create ns spire
-- command: helm install --wait -f ../../../cray-istio/kubernetes/cray-istio-operator/tests/kuttl/values.yaml --namespace istio-system cray-istio-operator ../../../cray-istio/kubernetes/cray-istio-operator
-- command: helm install --wait -f ../../../cray-istio/kubernetes/cray-istio-deploy/tests/kuttl/values-disable-prometheus.yaml --namespace istio-system cray-istio-deploy ../../../cray-istio/kubernetes/cray-istio-deploy
-- command: helm install --wait -f ../../../cray-istio/kubernetes/cray-istio/tests/kuttl/cray-certmanager-init.yaml --namespace cert-manager-init cray-certmanager-init cray-csm/cray-certmanager-init
-- command: helm install --wait -f ../../../cray-istio/kubernetes/cray-istio/tests/kuttl/cray-certmanager.yaml --namespace cert-manager cray-certmanager cray-csm/cray-certmanager
-- command: helm install --wait -f ../../../cray-istio/kubernetes/cray-istio/tests/kuttl/cray-certmanager-issuers.yaml --namespace cert-manager cray-certmanager-issuers cray-csm/cray-certmanager-issuers
-- command: helm install -f ../../../cray-postgres-operator/kubernetes/cray-postgres-operator/tests/kuttl/values.yaml --namespace services cray-postgres-operator ../../../cray-postgres-operator/kubernetes/cray-postgres-operator
-- command: kubectl apply -f ./tests/kuttl/spire-tokens-tls.yaml
-- command: helm install -f ./tests/kuttl/values.yaml --namespace spire spire .
-# Wait 200 seconds for pods to come up.
-- command: ./tests/kuttl/wait-for-pods.sh
+  - command: ./tests/kuttl/load-kind.sh
+  - command: kubectl create ns services
+  - command: kubectl create ns spire
+  - command: kubectl create ns sysmgmt-health
+  - command: kubectl apply -f ./tests/kuttl/csm-high-priority-service.yaml
+  - command: kubectl apply -f ./tests/kuttl/destinationrules.networking.istio.io.yaml
+  - command: kubectl apply -f ./tests/kuttl/virtualservices.networking.istio.io.yaml
+  - command: kubectl apply -f ./tests/kuttl/peerauthentications.security.istio.io.yaml
+  - command: kubectl apply -f ./tests/kuttl/certificates.cert-manager.io.yaml
+  - command: kubectl apply -f ./tests/kuttl/servicemonitors.monitoring.coreos.com.yaml
+  - command: kubectl apply -f ./tests/kuttl/spire-tokens-tls.yaml
+  - command: helm install --wait --namespace services cray-postgres-operator algol60/cray-postgres-operator
+  - command: helm install -f ./tests/kuttl/values.yaml --namespace spire spire .
+  # Wait 200 seconds for pods to come up.
+  - command: ./tests/kuttl/wait-for-pods.sh
 testDirs:
-- ./tests/kuttl
+  - ./tests/kuttl
 startKIND: true
+kindConfig: kind.yaml
 kindNodeCache: true
+artifactsDir: /tmp/kuttl

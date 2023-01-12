@@ -24,10 +24,10 @@
 current_dir := $(shell pwd)
 tmp_dir := $(shell mktemp -d)
 
-.SILENT: helmlint eval test unittest
-.PHONY: helmlint eval test unittest
+.SILENT: helmlint eval kuttl kuttl-clean kuttl-keep unittest
+.PHONY: helmlint eval kuttl kuttl-clean kuttl-keep unittest
 
-all: helmlint eval unittest test
+all: helmlint eval unittest kuttl
 
 lint: helmlint eval unittest
 
@@ -37,5 +37,11 @@ eval:
 helmlint:
 	helm lint
 
-test:
-	kubectl kuttl test --kind-config kind.yaml --artifacts-dir /tmp/kuttl
+kuttl:
+	kubectl kuttl test
+
+kuttl-keep:
+	kubectl kuttl test --skip-cluster-delete --skip-delete
+
+kuttl-clean:
+	kind delete cluster

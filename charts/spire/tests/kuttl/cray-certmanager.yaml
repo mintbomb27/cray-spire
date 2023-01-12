@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright [2022] Hewlett Packard Enterprise Development LP
+# (C) Copyright 2022 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -21,26 +21,20 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-vshasta: true
+# Required for the webhook certificate to match the 'cray' overlay service name
+# Also updated in the cray-certmanager-init CRDs (*...webhookClientConfig.service instances)
 
-server:
-  replicaCount: 1
-  disableExternalCerts: true
+# ExtraArgs (--enable-certificate-owner-ref=true) used to delete TLS key material (K8S secret)
+# when certificate is deleted
+# https://github.com/jetstack/cert-manager/pull/1828
 
-jwks:
-  replicaCount: 1
+kubectl:
+  image:
+    repository: artifactory.algol60.net/csm-docker/stable/docker-kubectl
 
-cray-service:
-  sqlCluster:
-    tls:
-      enabled: false
-    instanceCount: 1
-    connectionPooler:
-      enabled: false
-    resources:
-      limits:
-        cpu: 100m
-        memory: 256Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
+cert-manager:
+   replicaCount: 1
+   webhook:
+      replicaCount: 1
+   cainjector:
+      replicaCount: 1

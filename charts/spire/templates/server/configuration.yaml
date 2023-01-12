@@ -58,12 +58,14 @@ data:
     }
 
     plugins {
+      {{- if not .Values.server.disableExternalCerts }}
       UpstreamAuthority "disk" { plugin_data {
-              cert_file_path = "/run/spire/tls/tls.crt"
-              key_file_path = "/run/spire/tls/tls.key"
-              bundle_file_path = "/run/spire/tls/ca.crt"
-          }
+        cert_file_path = "/run/spire/tls/tls.crt"
+        key_file_path = "/run/spire/tls/tls.key"
+        bundle_file_path = "/run/spire/tls/ca.crt"
+        }
       }
+      {{- end }}
 
       DataStore "sql" {
         plugin_data {
@@ -117,8 +119,8 @@ data:
       agentPath=$3
       ttl=$4
 
-      if ! ./bin/spire-server entry show -spiffeID "spiffe://shasta/${type}/workload/${workload}" | grep -q "spiffe://shasta/${type}/workload/${workload}"; then
-        if [ "$ttl" ]; then
+      if [ "$ttl" ]; then
+        if ! ./bin/spire-server entry show -spiffeID "spiffe://shasta/${type}/workload/${workload}" -ttl ${ttl} -selector "unix:path:${agentPath}" | grep -q "spiffe://shasta/${type}/workload/${workload}"; then
           ./bin/spire-server entry create \
             -parentID spiffe://{{ .Values.trustDomain }}/${type} \
             -spiffeID spiffe://{{ .Values.trustDomain }}/${type}/workload/${workload} \
@@ -127,15 +129,19 @@ data:
             -selector unix:path:${agentPath} \
             -ttl ${ttl} || echo "Entry creation failed: $@"
         else
+          echo "Entry already exists: $@"
+        fi
+      else
+        if ! ./bin/spire-server entry show -spiffeID "spiffe://shasta/${type}/workload/${workload}" -selector "unix:path:${agentPath}" | grep -q "spiffe://shasta/${type}/workload/${workload}"; then
           ./bin/spire-server entry create \
             -parentID spiffe://{{ .Values.trustDomain }}/${type} \
             -spiffeID spiffe://{{ .Values.trustDomain }}/${type}/workload/${workload} \
             -selector unix:uid:0 \
             -selector unix:gid:0 \
             -selector unix:path:${agentPath} || echo "Entry creation failed: $@"
+        else
+          echo "Entry already exists: $@"
         fi
-      else
-        echo "Entry already exists: $@"
       fi
     }
 
@@ -202,5 +208,45 @@ data:
     create_if_new uan dvs-map /usr/bin/dvs-map-spire-agent
     create_if_new uan heartbeat /usr/bin/heartbeat-spire-agent
     create_if_new uan orca /usr/bin/orca-spire-agent
+
+    # New Paths
+    create_if_new compute bos-reporter /opt/cray/cray-spire/bos-reporter-spire-agent
+    create_if_new compute cfs-state-reporter /opt/cray/cray-spire/cfs-state-reporter-spire-agent
+    create_if_new compute ckdump /opt/cray/cray-spire/ckdump-spire-agent 864000
+    create_if_new compute ckdump_helper /opt/cray/cray-spire/ckdump_helper 864000
+    create_if_new compute cpsmount /opt/cray/cray-spire/cpsmount-spire-agent
+    create_if_new compute cpsmount_helper /opt/cray/cps-utils/bin/cpsmount_helper
+    create_if_new compute dvs-hmi /opt/cray/cray-spire/dvs-hmi-spire-agent
+    create_if_new compute dvs-map /opt/cray/cray-spire/dvs-map-spire-agent
+    create_if_new compute heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
+    create_if_new compute orca /opt/cray/cray-spire/orca-spire-agent
+    create_if_new compute tpm-provisioner /opt/cray/cray-spire/tpm-provisioner
+    create_if_new compute wlm /opt/cray/cray-spire/wlm-spire-agent
+
+    create_if_new ncn bos-reporter /opt/cray/cray-spire/bos-reporter-spire-agent
+    create_if_new ncn cfs-state-reporter /opt/cray/cray-spire/cfs-state-reporter-spire-agent
+    create_if_new ncn cpsmount /opt/cray/cray-spire/cpsmount-spire-agent
+    create_if_new ncn cpsmount_helper /opt/cray/cps-utils/bin/cpsmount_helper
+    create_if_new ncn dvs-hmi /opt/cray/cray-spire/dvs-hmi-spire-agent
+    create_if_new ncn dvs-map /opt/cray/cray-spire/dvs-map-spire-agent
+    create_if_new ncn heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
+    create_if_new ncn orca /opt/cray/cray-spire/orca-spire-agent
+    create_if_new ncn tpm-provisioner /opt/cray/cray-spire/tpm-provisioner
+
+    create_if_new storage cfs-state-reporter /opt/cray/cray-spire/cfs-state-reporter-spire-agent
+    create_if_new storage heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
+    create_if_new storage tpm-provisioner /opt/cray/cray-spire/tpm-provisioner
+
+    create_if_new uan bos-reporter /opt/cray/cray-spire/bos-reporter-spire-agent
+    create_if_new uan cfs-state-reporter /opt/cray/cray-spire/cfs-state-reporter-spire-agent
+    create_if_new uan ckdump /opt/cray/cray-spire/ckdump-spire-agent 864000
+    create_if_new uan ckdump_helper /opt/cray/cray-spire/ckdump_helper 864000
+    create_if_new uan cpsmount /opt/cray/cray-spire/cpsmount-spire-agent
+    create_if_new uan cpsmount_helper /opt/cray/cps-utils/bin/cpsmount_helper
+    create_if_new uan dvs-hmi /opt/cray/cray-spire/dvs-hmi-spire-agent
+    create_if_new uan dvs-map /opt/cray/cray-spire/dvs-map-spire-agent
+    create_if_new uan heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
+    create_if_new uan orca /opt/cray/cray-spire/orca-spire-agent
+    create_if_new uan tpm-provisioner /opt/cray/cray-spire/tpm-provisioner
     {{- end }}
     exit 0
