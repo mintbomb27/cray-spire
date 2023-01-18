@@ -23,7 +23,7 @@
 #
 apiVersion: v2
 name: spire
-version: 3.1.0
+version: 3.1.1
 description: A Helm chart for spire
 home: https://github.com/Cray-HPE/cray-spire
 dependencies:
@@ -45,7 +45,7 @@ annotations:
     - name: wait-for-it
       image: artifactory.algol60.net/csm-docker/stable/sdlc-ops/wait-for-it:1.0.0
     - name: alpine
-      image: artifactory.algol60.net/docker.io/alpine:3.16
+      image: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine:3.16
     - name: curl
       image: artifactory.algol60.net/csm-docker/stable/docker.io/curlimages/curl:7.80.0
     - name: nginx

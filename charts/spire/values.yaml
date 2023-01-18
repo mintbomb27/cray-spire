@@ -63,7 +63,7 @@ server:
     pullPolicy: IfNotPresent
 
   init2:
-    repository: alpine
+    repository: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine
     tag: 3.16
     pullPolicy: IfNotPresent
 
@@ -130,7 +130,7 @@ agent:
     pullPolicy: IfNotPresent
 
   init2:
-    repository: alpine
+    repository: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine
     tag: 3.16
     pullPolicy: IfNotPresent
 
@@ -180,7 +180,7 @@ ncn:
   filename: join_token
   path: /var/lib/spire
   init:
-    repository: alpine
+    repository: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine
     tag: 3.16
   curl:
     repository: artifactory.algol60.net/csm-docker/stable/docker.io/curlimages/curl
