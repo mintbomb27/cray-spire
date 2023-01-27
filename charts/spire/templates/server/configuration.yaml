@@ -60,12 +60,12 @@ data:
     plugins {
       {{- if not .Values.server.disableExternalCerts }}
       UpstreamAuthority "disk" { plugin_data {
-        cert_file_path = "/run/spire/tls/tls.crt"
-        key_file_path = "/run/spire/tls/tls.key"
-        bundle_file_path = "/run/spire/tls/ca.crt"
-        }
+              cert_file_path = "/run/spire/tls/tls.crt"
+              key_file_path = "/run/spire/tls/tls.key"
+              bundle_file_path = "/run/spire/tls/ca.crt"
+          }
       }
-      {{- end }}
+      {{- end}}
 
       DataStore "sql" {
         plugin_data {
@@ -83,10 +83,14 @@ data:
           clusters = {
             "{{ .Values.trustDomain }}" = {
               use_token_review_api_validation = true
-              service_account_allow_list = ["{{ .Release.Namespace }}:{{ include "spire.fullname" . }}-agent"]
+              service_account_whitelist = ["{{ .Release.Namespace }}:{{ include "spire.fullname" . }}-agent"]
             }
           }
         }
+      }
+
+      NodeResolver "noop" {
+        plugin_data {}
       }
 
       KeyManager "disk" {
@@ -146,7 +150,7 @@ data:
     }
 
     # Wait for the socket to appear
-    while [ ! -S /tmp/spire-server/private/api.sock ]; do
+    while [ ! -S /tmp/spire-registration.sock ]; do
       echo "Waiting for registration socket"
       sleep 3
     done

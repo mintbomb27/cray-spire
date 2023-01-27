@@ -99,12 +99,6 @@ spec:
             - name: spire-db-creds
               mountPath: /run/spire/db-creds
               readOnly: true
-        {{- if index .Values "cray-service" "sqlCluster" "connectionPooler" "enabled" }}
-        - name: init-wait-on-pooler
-          image: "{{ .Values.server.init.repository }}:{{ .Values.server.init.tag }}"
-          imagePullPolicy: {{ .Values.server.init.pullPolicy }}
-          args: ["-t", "120", "spire-postgres-pooler.spire.svc.cluster.local:5432"]
-        {{- end }}
       containers:
         - name: {{ include "spire.name" . }}-server
           image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"

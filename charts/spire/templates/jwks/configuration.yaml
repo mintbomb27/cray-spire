@@ -29,7 +29,7 @@ data:
   spire-jwks-provider.conf: |
     log_level = "{{ .Values.jwks.logLevel }}"
     log_requests = true
-    domains = ["{{ .Values.jwks.domain }}"]
+    domain = "{{ .Values.jwks.domain }}"
     listen_socket_path = "/run/spire/jwks/provider.sock"
 
     workload_api {

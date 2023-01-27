@@ -85,6 +85,12 @@ spec:
           runAsGroup: 65534
           runAsNonRoot: true
         args: ["-config", "/run/spire/config/spire-jwks-provider.conf"]
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - "/bin/sh"
+                - "/run/spire/config/spire-jwks-sockethack"
         volumeMounts:
         - name: {{ include "spire.name" . }}-jwks-config
           mountPath: /run/spire/config

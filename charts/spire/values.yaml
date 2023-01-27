@@ -25,11 +25,13 @@ nameOverride: ""
 
 global:
   chart:
-    name: ""  # set at deploy time automatically, no need to ever set explicitly
+    name: ""     # set at deploy time automatically, no need to ever set explicitly
     version: ""  # set at deploy time automatically, no need to ever set explicitly
 
 trustDomain: shasta
 vshasta: false
+
+migration: true
 
 server:
   replicaCount: 3
@@ -45,14 +47,14 @@ server:
   registrationPort: 54440
   priorityClassName: csm-high-priority-service
   tokenService:
-    computeEntry: compute/tenant1
-    computeClusterEntry: compute
-    ncnEntry: ncn/tenant1
-    ncnClusterEntry: ncn
-    storageEntry: storage/tenant1
-    storageClusterEntry: storage
-    uanEntry: uan/tenant1
-    uanClusterEntry: uan
+    computeEntry: /compute/tenant1
+    computeClusterEntry: /compute
+    ncnEntry: /ncn/tenant1
+    ncnClusterEntry: /ncn
+    storageEntry: /storage/tenant1
+    storageClusterEntry: /storage
+    uanEntry: /uan/tenant1
+    uanClusterEntry: /uan
     tokenTTL: 10800
     enableXNameWorkloads: false
   annotations: {}
@@ -63,18 +65,18 @@ server:
     pullPolicy: IfNotPresent
 
   init2:
-    repository: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine
+    repository: alpine
     tag: 3.16
     pullPolicy: IfNotPresent
 
   image:
     repository: artifactory.algol60.net/csm-docker/stable/gcr.io/spiffe-io/spire-server
-    tag: 1.4.0
+    tag: 0.12.2
     pullPolicy: IfNotPresent
 
   registration:
     repository: artifactory.algol60.net/csm-docker/stable/spire-tokens
-    tag: 3.1.0
+    tag: 2.1.0
     pullPolicy: IfNotPresent
 
   persistentVolume:
@@ -130,13 +132,13 @@ agent:
     pullPolicy: IfNotPresent
 
   init2:
-    repository: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine
+    repository: alpine
     tag: 3.16
     pullPolicy: IfNotPresent
 
   image:
     repository: artifactory.algol60.net/csm-docker/stable/gcr.io/spiffe-io/spire-agent
-    tag: 1.4.0
+    tag: 0.12.2
     pullPolicy: IfNotPresent
 
 jwks:
@@ -149,7 +151,7 @@ jwks:
 
   image:
     repository: artifactory.algol60.net/csm-docker/stable/cray-spire-jwks
-    tag: 0.3.0
+    tag: 0.1.1
     pullPolicy: IfNotPresent
 
   nginx:
@@ -180,7 +182,7 @@ ncn:
   filename: join_token
   path: /var/lib/spire
   init:
-    repository: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine
+    repository: alpine
     tag: 3.16
   curl:
     repository: artifactory.algol60.net/csm-docker/stable/docker.io/curlimages/curl
