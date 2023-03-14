@@ -1,7 +1,7 @@
 {{/*
 MIT License
 
-(C) Copyright 2022-2023 Hewlett Packard Enterprise Development LP
+(C) Copyright 2022 Hewlett Packard Enterprise Development LP
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
@@ -25,9 +25,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "spire.fullname" . }}-postgres-pooler
+  name: {{ include "spire.fullname" . }}-jwks
 spec:
-  minAvailable: 2
+  minAvailable: {{ sub $.Values.jwks.replicaCount 1 }}
   selector:
     matchLabels:
-      connection-pooler: {{ include "spire.fullname" . }}-postgres-pooler
+      app.kubernetes.io/name: {{ include "spire.name" . }}-jwks

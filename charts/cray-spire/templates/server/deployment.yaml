@@ -1,0 +1,246 @@
+{{/*
+MIT License
+
+(C) Copyright 2022-2023 Hewlett Packard Enterprise Development LP
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+*/}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "spire.fullname" . }}-server
+  labels:
+    app.kubernetes.io/name: {{ template "spire.name" . }}-server
+    {{- include "spire.common-labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.server.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "spire.name" . }}-server
+  serviceName: {{ include "spire.name" . }}
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      {{- with .Values.server.annotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ include "spire.name" . }}-server
+    spec:
+      serviceAccountName: {{ include "spire.name" . }}-server
+{{- if .Values.server.priorityClassName }}
+      priorityClassName: {{ .Values.server.priorityClassName }}
+{{- end }}
+      affinity:
+          podAntiAffinity:
+             requiredDuringSchedulingIgnoredDuringExecution:
+               - labelSelector:
+                   matchExpressions:
+                   - key: app
+                     operator: In
+                     values:
+                       - {{ include "spire.name" . }}-server
+                 topologyKey: kubernetes.io/hostname
+      initContainers:
+        - name: init-setperms
+          image: "{{ .Values.server.init2.repository }}:{{ .Values.server.init2.tag }}"
+          imagePullPolicy: {{ .Values.server.init2.pullPolicy }}
+          command:
+            - '/bin/sh'
+          args:
+            - '-x'
+            - '-c'
+            - 'chown -R 65534:65534 /run/spire/server /shared-socket /run/spire/data'
+          volumeMounts:
+            - name: server
+              mountPath: /run/spire/server
+              readOnly: false
+            - name: shared-socket
+              mountPath: /shared-socket
+              readOnly: false
+            - name: data
+              mountPath: /run/spire/data
+              readOnly: false
+        - name: init
+          # This is a small image with wait-for-it, choose whatever image
+          # you prefer that waits for a service to be up. This image is built
+          # from https://github.com/Cray-HPE/container-images
+          image: "{{ .Values.server.init.repository }}:{{ .Values.server.init.tag }}"
+          imagePullPolicy: {{ .Values.server.init.pullPolicy }}
+          args: ["-t", "30", "{{ include "spire.fullname" . }}-postgres:5432"]
+        - name: init2
+          image: "{{ .Values.server.init2.repository }}:{{ .Values.server.init2.tag }}"
+          imagePullPolicy: {{ .Values.server.init2.pullPolicy }}
+          command: ['sh', '-c', 'sed -e "s/POSTGRESUSER/$(cat /run/spire/db-creds/username)/" -e "s/POSTGRESPASS/$(cat /run/spire/db-creds/password)/" < /run/spire/config/server.conf > /run/spire/server/server.conf']
+          volumeMounts:
+            - name: config
+              mountPath: /run/spire/config
+              readOnly: true
+            - name: server
+              mountPath: /run/spire/server
+              readOnly: false
+            - name: db-creds
+              mountPath: /run/spire/db-creds
+              readOnly: true
+        {{- if index .Values "cray-service" "sqlCluster" "connectionPooler" "enabled" }}
+        - name: init-wait-on-pooler
+          image: "{{ .Values.server.init.repository }}:{{ .Values.server.init.tag }}"
+          imagePullPolicy: {{ .Values.server.init.pullPolicy }}
+          args: ["-t", "120", '{{ include "spire.fullname" . }}-postgres-pooler.spire.svc.cluster.local:5432']
+        {{- end }}
+      containers:
+        - name: spire-server
+          image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+          imagePullPolicy: {{ .Values.server.image.pullPolicy }}
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
+          env:
+            # This env is used to restart pod when this configuration option changes
+            - name: connectionPooler
+              value: "{{ index .Values "cray-service" "sqlCluster" "connectionPooler" "enabled" }}"
+          args: ["-config", "/run/spire/server/server.conf"]
+          ports:
+            - name: grpc
+              containerPort: {{ .Values.server.port }}
+              protocol: TCP
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - "/bin/sh"
+                  - "/run/spire/config/register"
+          livenessProbe:
+            tcpSocket:
+              port: grpc
+          readinessProbe:
+            tcpSocket:
+              port: grpc
+          resources:
+          volumeMounts:
+            - name: config
+              mountPath: /run/spire/config
+              readOnly: true
+            - name: server
+              mountPath: /run/spire/server
+              readOnly: false
+            - name: db-creds
+              mountPath: /run/spire/db-creds
+              readOnly: true
+            - name: shared-socket
+              mountPath: /tmp
+              readOnly: false
+           {{- if not .Values.server.disableExternalCerts }}
+            - name: ca-tls
+              mountPath: /run/spire/tls
+              readOnly: true
+            {{- end }}
+            - name: data
+              mountPath: /run/spire/data
+              readOnly: false
+        - name: registration-server
+          image: "{{ .Values.server.registration.repository }}:{{ .Values.server.registration.tag }}"
+          imagePullPolicy: {{ .Values.server.registration.pullPolicy }}
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
+          env:
+            - name: SPIRE_DOMAIN
+              value: "{{ .Values.trustDomain }}"
+            - name: COMPUTE_ENTRY
+              value: "{{ .Values.server.tokenService.computeEntry }}"
+            - name: NCN_ENTRY
+              value: "{{ .Values.server.tokenService.ncnEntry }}"
+            - name: UAN_ENTRY
+              value: "{{ .Values.server.tokenService.uanEntry }}"
+            - name: STORAGE_ENTRY
+              value: "{{ .Values.server.tokenService.storageEntry }}"
+            - name: NCN_CLUSTER_ENTRY
+              value: "{{ .Values.server.tokenService.ncnClusterEntry }}"
+            - name: COMPUTE_CLUSTER_ENTRY
+              value: "{{ .Values.server.tokenService.computeClusterEntry }}"
+            - name: UAN_CLUSTER_ENTRY
+              value: "{{ .Values.server.tokenService.uanClusterEntry }}"
+            - name: STORAGE_CLUSTER_ENTRY
+              value: "{{ .Values.server.tokenService.storageClusterEntry }}"
+            - name: TTL
+              value: "{{ .Values.server.tokenService.tokenTTL }}"
+            - name: ENABLE_XNAME_WORKLOADS
+              value: "{{ .Values.server.tokenService.enableXNameWorkloads }}"
+          imagePullPolicy: {{ .Values.server.image.pullPolicy }}
+          volumeMounts:
+            - name: shared-socket
+              mountPath: /tmp
+              readOnly: false
+            - name: tokens-tls
+              mountPath: /tls
+              readOnly: true
+            - name: workloads
+              mountPath: /workloads
+              readOnly: true
+          ports:
+            - name: registration
+              containerPort: {{ .Values.server.registrationPort }}
+              protocol: TCP
+      shareProcessNamespace: true
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "spire.fullname" . }}-server-config
+        - name: server
+          emptyDir: {}
+        - name: shared-socket
+          hostPath:
+            path: /run/spire/sockets/shared
+            type: DirectoryOrCreate
+        - name: db-creds
+          secret:
+            secretName: spire.{{ include "spire.fullname" . }}-postgres.credentials
+        - name: tokens-tls
+          secret:
+            secretName: {{ include "spire.fullname" . }}-tokens-tls
+        {{- if not .Values.server.disableExternalCerts }}
+        - name: ca-tls
+          secret:
+            secretName: spire.{{ .Release.Namespace }}.ca-tls
+        {{- end }}
+        - name: workloads
+          configMap:
+            name: {{ include "spire.fullname" . }}-workloads
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          {{- range .Values.server.persistentVolume.accessModes }}
+          - {{ . | quote }}
+          {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.server.persistentVolume.size | quote }}
+      {{- if .Values.server.persistentVolume.storageClass }}
+      {{- if (eq "-" .Values.server.persistentVolume.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.server.persistentVolume.storageClass }}"
+      {{- end }}
+      {{- end }}

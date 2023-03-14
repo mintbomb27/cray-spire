@@ -24,8 +24,8 @@
 CHART_METADATA_IMAGE ?= artifactory.algol60.net/csm-docker/stable/chart-metadata
 YQ_IMAGE ?= artifactory.algol60.net/docker.io/mikefarah/yq:4
 HELM_IMAGE ?= artifactory.algol60.net/docker.io/alpine/helm:3.7.1
-HELM_UNITTEST_IMAGE ?= artifactory.algol60.net/docker.io/quintush/helm-unittest
-HELM_DOCS_IMAGE ?= artifactory.algol60.net/docker.io/jnorwood/helm-docs:v1.5.0
+HELM_UNITTEST_IMAGE ?= docker.io/quintush/helm-unittest:latest
+HELM_DOCS_IMAGE ?= docker.io/jnorwood/helm-docs:v1.5.0
 ifeq ($(shell uname -s),Darwin)
 	HELM_CONFIG_HOME ?= $(HOME)/Library/Preferences/helm
 else
@@ -58,7 +58,7 @@ dep-up:
 test:
 	docker run --rm \
 		-v ${PWD}/charts:/apps \
-		${HELM_UNITTEST_IMAGE} -3 \
+		${HELM_UNITTEST_IMAGE} \
 		spire \
 		spire-intermediate
 

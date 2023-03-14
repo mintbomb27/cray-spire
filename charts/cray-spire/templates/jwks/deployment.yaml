@@ -1,0 +1,133 @@
+{{/*
+MIT License
+
+(C) Copyright 2022-2023 Hewlett Packard Enterprise Development LP
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+*/}}
+{{ $uuid := uuidv4 }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "spire.fullname" . }}-jwks
+  labels:
+    app.kubernetes.io/name: {{ template "spire.name" . }}-jwks
+    deployment/uuid: {{ $uuid }}
+    {{- include "spire.common-labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.jwks.replicaCount }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "spire.name" . }}-jwks
+  template:
+    metadata:
+    {{- with .Values.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ include "spire.name" . }}-jwks
+    spec:
+      serviceAccountName: {{ include "spire.name" . }}-jwks
+{{- if .Values.jwks.priorityClassName }}
+      priorityClassName: {{ .Values.jwks.priorityClassName }}
+{{- end }}
+      affinity:
+          podAntiAffinity:
+             requiredDuringSchedulingIgnoredDuringExecution:
+               - labelSelector:
+                     matchExpressions:
+                     - key: deployment/uuid
+                       operator: In
+                       values:
+                           - {{ $uuid }}
+                 topologyKey: kubernetes.io/hostname
+      initContainers:
+      - name: init
+        # Wait for the agent workload socket to appear
+        image: "{{ .Values.jwks.image.repository }}:{{ .Values.jwks.image.tag }}"
+        imagePullPolicy: {{ .Values.jwks.image.pullPolicy }}
+        command:
+          - "/bin/sh"
+          - "/run/spire/config/jwks-socketwait"
+        volumeMounts:
+        - name: jwks-config
+          mountPath: /run/spire/config
+          readOnly: true
+        - name:  agent-socket
+          mountPath: /run/spire/sockets
+          readOnly: true
+      containers:
+      - name: jwks
+        image: "{{ .Values.jwks.image.repository }}:{{ .Values.jwks.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.jwks.image.pullPolicy }}
+        securityContext:
+          runAsUser: 65534
+          runAsGroup: 65534
+          runAsNonRoot: true
+        args: ["-config", "/run/spire/config/jwks-provider.conf"]
+        volumeMounts:
+        - name: jwks-config
+          mountPath: /run/spire/config
+          readOnly: true
+        - name: agent-socket
+          mountPath: /run/spire/sockets
+          readOnly: true
+        - name:  socket
+          mountPath: /run/spire/jwks
+          readOnly: false
+      - name: nginx
+        image: "{{ .Values.jwks.nginx.repository }}:{{ .Values.jwks.nginx.tag }}"
+        imagePullPolicy: {{ .Values.jwks.nginx.pullPolicy }}
+        command: ["nginx", "-c", "/run/spire/config/jwks-nginx.conf"]
+        env:
+        - name: RESTART_CONFIG_VERSION
+          value: "1"  # Change this when the config changes to cause a restart.
+        volumeMounts:
+        - name: nginx
+          mountPath: /run/spire/config
+          readOnly: true
+        - name: socket
+          mountPath: /run/spire/jwks
+          readOnly: true
+        ports:
+        - containerPort: {{ .Values.jwks.port }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.jwks.port }}
+          failureThreshold: 2
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          timeoutSeconds: 3
+      volumes:
+      - name: jwks-config
+        configMap:
+          name: "{{ include "spire.fullname" . }}-jwks-config"
+      - name: nginx
+        configMap:
+          name: "{{ include "spire.fullname" . }}-nginx"
+      - name:  agent-socket
+        hostPath:
+          path: {{ .Values.agent.wlSocket }}
+          type: Directory
+      - name: socket
+        emptyDir: {}

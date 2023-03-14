@@ -21,13 +21,27 @@ OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */}}
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: {{ include "spire.fullname" . }}-postgres-pooler
-spec:
-  minAvailable: 2
-  selector:
-    matchLabels:
-      connection-pooler: {{ include "spire.fullname" . }}-postgres-pooler
+  name: {{ include "spire.name" . }}-jwks-config
+data:
+  jwks-provider.conf: |
+    log_level = "{{ .Values.jwks.logLevel }}"
+    log_requests = true
+    domains = ["{{ .Values.jwks.domain }}"]
+    listen_socket_path = "/run/spire/jwks/provider.sock"
+
+    workload_api {
+      socket_path = "/run/spire/sockets/agent.sock"
+      trust_domain = "{{ .Values.trustDomain }}"
+    }
+  jwks-sockethack: |
+    #!/bin/sh
+    while [ ! -S /run/{{ include "spire.fullname" . }}/jwks/provider.sock ]; do sleep 1; done
+    chmod 777 /run/spire/jwks/provider.sock
+    exit 0
+  jwks-socketwait: |
+    #!/bin/sh
+    while [ ! -S /run/spire/sockets/agent.sock ]; do sleep 5; done
+    exit 0
