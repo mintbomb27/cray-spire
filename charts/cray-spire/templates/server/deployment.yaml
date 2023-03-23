@@ -99,7 +99,7 @@ spec:
             - name: db-creds
               mountPath: /run/spire/db-creds
               readOnly: true
-        {{- if index .Values "cray-service" "sqlCluster" "connectionPooler" "enabled" }}
+        {{- if index .Values "cray-postgresql" "sqlCluster" "connectionPooler" "enabled" }}
         - name: init-wait-on-pooler
           image: "{{ .Values.server.init.repository }}:{{ .Values.server.init.tag }}"
           imagePullPolicy: {{ .Values.server.init.pullPolicy }}
@@ -116,7 +116,7 @@ spec:
           env:
             # This env is used to restart pod when this configuration option changes
             - name: connectionPooler
-              value: "{{ index .Values "cray-service" "sqlCluster" "connectionPooler" "enabled" }}"
+              value: "{{ index .Values "cray-postgresql" "sqlCluster" "connectionPooler" "enabled" }}"
           args: ["-config", "/run/spire/server/server.conf"]
           ports:
             - name: grpc

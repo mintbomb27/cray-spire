@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright [2021-2022] Hewlett Packard Enterprise Development LP
+# (C) Copyright [2021-2023] Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -49,10 +49,12 @@ helm:
 
 lint:
 	CMD="lint charts/spire"              $(MAKE) helm
+	CMD="lint charts/cray-spire"         $(MAKE) helm
 	CMD="lint charts/spire-intermediate" $(MAKE) helm
 
 dep-up:
 	CMD="dep up charts/spire"              $(MAKE) helm
+	CMD="dep up charts/cray-spire"         $(MAKE) helm
 	CMD="dep up charts/spire-intermediate" $(MAKE) helm
 
 test:
@@ -60,11 +62,13 @@ test:
 		-v ${PWD}/charts:/apps \
 		${HELM_UNITTEST_IMAGE} \
 		spire \
+		cray-spire \
 		spire-intermediate
 
 package:
 ifdef CHART_VERSIONS
 	CMD="package charts/spire              --version $(word 1, $(CHART_VERSIONS)) -d packages" $(MAKE) helm
+	CMD="package charts/cray-spire         --version $(word 1, $(CHART_VERSIONS)) -d packages" $(MAKE) helm
 	CMD="package charts/spire-intermediate --version $(word 2, $(CHART_VERSIONS)) -d packages" $(MAKE) helm
 else
 	CMD="package charts/* -d packages" $(MAKE) helm
@@ -81,6 +85,7 @@ annotated-images:
 
 images:
 	{ CHART=charts/spire              $(MAKE) -s extracted-images annotated-images; \
+	  CHART=charts/cray-spire         $(MAKE) -s extracted-images annotated-images; \
 	  CHART=charts/spire-intermediate $(MAKE) -s extracted-images annotated-images; \
 	} | sort -u
 
@@ -96,4 +101,4 @@ gen-docs:
 		helm-docs --chart-search-root=charts
 
 clean:
-	$(RM) -r .helm packages charts/spire/charts
+	$(RM) -r .helm packages charts/spire/charts charts/cray-spire/charts

@@ -90,10 +90,11 @@ cray-service:
   nameOverride: spire
   service:
     enabled: false
+
+cray-postgresql:
   sqlCluster:
     enabled: true
     instanceCount: 3
-    postgresVersion: "11"
     volumeSize: 60Gi
     podPriorityClassName: csm-high-priority-service
     users:
@@ -116,8 +117,8 @@ cray-service:
       idle_in_transaction_session_timeout: "5000"
       statement_timeout: "60000"
     backup:
-      enabled: true
-      schedule: "10 3 * * *"  # Once per day at 3:10AM
+      enableLogicalBackup: true
+      logicalBackupSchedule: "10 3 * * *"  # Once per day at 3:10AM
 
 tls:
   issuer: cert-manager-issuer-common
