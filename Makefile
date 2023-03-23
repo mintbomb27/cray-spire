@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright [2021-2022] Hewlett Packard Enterprise Development LP
+# (C) Copyright [2021-2023] Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -24,8 +24,8 @@
 CHART_METADATA_IMAGE ?= artifactory.algol60.net/csm-docker/stable/chart-metadata
 YQ_IMAGE ?= artifactory.algol60.net/docker.io/mikefarah/yq:4
 HELM_IMAGE ?= artifactory.algol60.net/docker.io/alpine/helm:3.7.1
-HELM_UNITTEST_IMAGE ?= docker.io/quintush/helm-unittest:latest
-HELM_DOCS_IMAGE ?= docker.io/jnorwood/helm-docs:v1.5.0
+HELM_UNITTEST_IMAGE ?= artifactory.algol60.net/docker.io/quintush/helm-unittest
+HELM_DOCS_IMAGE ?= artifactory.algol60.net/docker.io/jnorwood/helm-docs:v1.5.0
 ifeq ($(shell uname -s),Darwin)
 	HELM_CONFIG_HOME ?= $(HOME)/Library/Preferences/helm
 else
@@ -33,7 +33,7 @@ else
 endif
 COMMA := ,
 
-all: lint dep-up test package
+all: dep-up test package
 
 helm:
 	docker run --rm \
@@ -49,10 +49,12 @@ helm:
 
 lint:
 	CMD="lint charts/spire"              $(MAKE) helm
+	CMD="lint charts/cray-spire"         $(MAKE) helm
 	CMD="lint charts/spire-intermediate" $(MAKE) helm
 
 dep-up:
 	CMD="dep up charts/spire"              $(MAKE) helm
+	CMD="dep up charts/cray-spire"         $(MAKE) helm
 	CMD="dep up charts/spire-intermediate" $(MAKE) helm
 
 test:
@@ -60,12 +62,14 @@ test:
 		-v ${PWD}/charts:/apps \
 		${HELM_UNITTEST_IMAGE} \
 		spire \
+		cray-spire \
 		spire-intermediate
 
 package:
 ifdef CHART_VERSIONS
 	CMD="package charts/spire              --version $(word 1, $(CHART_VERSIONS)) -d packages" $(MAKE) helm
-	CMD="package charts/spire-intermediate --version $(word 2, $(CHART_VERSIONS)) -d packages" $(MAKE) helm
+	CMD="package charts/cray-spire         --version $(word 2, $(CHART_VERSIONS)) -d packages" $(MAKE) helm
+	CMD="package charts/spire-intermediate --version $(word 3, $(CHART_VERSIONS)) -d packages" $(MAKE) helm
 else
 	CMD="package charts/* -d packages" $(MAKE) helm
 endif
@@ -81,6 +85,7 @@ annotated-images:
 
 images:
 	{ CHART=charts/spire              $(MAKE) -s extracted-images annotated-images; \
+	{ CHART=charts/cray-spire         $(MAKE) -s extracted-images annotated-images; \
 	  CHART=charts/spire-intermediate $(MAKE) -s extracted-images annotated-images; \
 	} | sort -u
 
