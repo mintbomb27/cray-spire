@@ -33,7 +33,7 @@ else
 endif
 COMMA := ,
 
-all: dep-up test package
+all: lint dep-up test package
 
 helm:
 	docker run --rm \
