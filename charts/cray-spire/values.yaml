@@ -90,6 +90,7 @@ cray-service:
     enabled: false
 
 cray-postgresql:
+  nameOverride: cray-spire
   sqlCluster:
     enabled: true
     instanceCount: 3
