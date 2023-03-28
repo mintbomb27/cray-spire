@@ -28,6 +28,7 @@ metadata:
   labels:
     app.kubernetes.io/name: {{ template "spire.name" . }}-update-bss
 spec:
+  backoffLimit: 3
   template:
     metadata:
       labels:
@@ -43,7 +44,7 @@ spec:
             - '-c'
           args:
             - 'retries=1;
-               while ! curl -fv --request PATCH -H "Content-Type: application/json" -d @/conf/bss-update.json "$ENDPOINT";
+               while ! curl --connect-timeout 15 -fv --request PATCH -H "Content-Type: application/json" -d @/conf/bss-update.json "$ENDPOINT";
                  do if [ $retries -gt 9 ];
                    then echo "Failed to add spire entry to BSS";
                    exit 1;

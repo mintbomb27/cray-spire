@@ -70,7 +70,7 @@ spec:
           args:
             - '-x'
             - '-c'
-            - 'count=0; while [ $count -lt 6 ]; do if ! curl -k -X POST -d type=ncn\&xname=$({{ template "getXname" . }}) "$URL" > /tmp/token; then sleep 5; count=$((count + 1)); else break; fi; done; if [ $count -eq 6 ]; then exit 1; fi; if ! grep -qiE "error|invalid" /tmp/token; then echo "join_token=$(cat /tmp/token | cut -d\" -f4)" > "/token/{{ .Values.ncn.filename }}"; else exit 2;fi; cat /config/spire-agent.conf > /token/spire-agent.conf ; while ! [ -e /bundle/bundle.crt ]; do sleep 10; done; cat /bundle/bundle.crt > /token/bundle.crt'
+            - 'count=0; while [ $count -lt 6 ]; do if ! curl --connect-timeout 15 -k -X POST -d type=ncn\&xname=$({{ template "getXname" . }}) "$URL" > /tmp/token; then sleep 5; count=$((count + 1)); else break; fi; done; if [ $count -eq 6 ]; then exit 1; fi; if ! grep -qiE "error|invalid" /tmp/token; then echo "join_token=$(cat /tmp/token | cut -d\" -f4)" > "/token/{{ .Values.ncn.filename }}"; else exit 2;fi; cat /config/spire-agent.conf > /token/spire-agent.conf ; while ! [ -e /bundle/bundle.crt ]; do sleep 10; done; cat /bundle/bundle.crt > /token/bundle.crt'
           env:
             - name: NODE_NAME
               valueFrom:

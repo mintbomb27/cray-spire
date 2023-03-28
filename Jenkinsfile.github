@@ -46,6 +46,7 @@ pipeline {
             environment {
                 CHART_VERSIONS = [
                     getChartVersion(name: "spire",              chartDirectory: "charts", isStable: env.IS_STABLE),
+                    getChartVersion(name: "cray-spire",         chartDirectory: "charts", isStable: env.IS_STABLE),
                     getChartVersion(name: "spire-intermediate", chartDirectory: "charts", isStable: env.IS_STABLE)
                 ].join(" ")
             }
