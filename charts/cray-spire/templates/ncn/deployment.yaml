@@ -59,7 +59,7 @@ spec:
           args:
             - '-x'
             - '-c'
-            - 'touch /token/{{ .Values.ncn.filename }} /token/spire-agent.conf /token/bundle.crt; chown 100:101 /token/{{ .Values.ncn.filename }} /token/spire-agent.conf /token/bundle.crt'
+            - 'touch /token/{{ .Values.ncn.filename }} /token/spire-agent.conf /token/bundle.crt; chown 100:101 /token /token/{{ .Values.ncn.filename }} /token/spire-agent.conf /token/bundle.crt'
           volumeMounts:
             - name: token
               mountPath: /token
@@ -94,7 +94,7 @@ spec:
           args:
             - '-x'
             - '-c'
-            - 'chown root:root /token/{{ .Values.ncn.filename }} /token/spire-agent.conf /token/bundle.crt'
+            - 'chown root:root /token /token/{{ .Values.ncn.filename }} /token/spire-agent.conf /token/bundle.crt'
           volumeMounts:
             - name: token
               mountPath: /token

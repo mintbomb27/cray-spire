@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2022 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2023 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -43,14 +43,14 @@ spec:
       # request-ncn-join-token joins kubernetes NCNs via a daemonset
       - namespaceSelector:
           matchLabels:
-            name: {{ include "spire.fullname" . }}
+            name: {{ .Release.Namespace }}
         podSelector:
           matchLabels:
             name: request-ncn-join-token
       # joining storage NCNs uses a spire-server pod to request tokens
       - namespaceSelector:
           matchLabels:
-            name: {{ include "spire.fullname" . }}
+            name: {{ .Release.Namespace }}
         podSelector:
           matchLabels:
             app.kubernetes.io/name: {{ include "spire.fullname" . }}-server
