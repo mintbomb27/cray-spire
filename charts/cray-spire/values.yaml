@@ -83,12 +83,6 @@ server:
     size: 1Gi
     storageClass: ""
 
-cray-service:
-  type: ""
-  nameOverride: cray-spire
-  service:
-    enabled: false
-
 cray-postgresql:
   nameOverride: cray-spire
   sqlCluster:
