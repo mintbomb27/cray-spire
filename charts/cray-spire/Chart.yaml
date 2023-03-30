@@ -23,13 +23,13 @@
 ---
 apiVersion: v2
 name: cray-spire
-version: 1.1.4
+version: 1.2.1
 description: A Helm chart for spire
 home: https://github.com/Cray-HPE/cray-spire
 dependencies:
-  - name: cray-service
-    version: ~8.2.0
-    repository: https://artifactory.algol60.net/artifactory/csm-helm-charts
+  - name: cray-postgresql
+    version: ~1.0.0
+    repository: "https://artifactory.algol60.net/artifactory/csm-helm-charts/"
 maintainers:
   - name: kburns-hpe
   - name: rnoska-hpe

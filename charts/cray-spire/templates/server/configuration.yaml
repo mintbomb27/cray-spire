@@ -70,7 +70,7 @@ data:
       DataStore "sql" {
         plugin_data {
           database_type = "postgres"
-          {{- if index .Values "cray-service" "sqlCluster" "connectionPooler" "enabled" }}
+          {{- if index .Values "cray-postgresql" "sqlCluster" "connectionPooler" "enabled" }}
           connection_string = "dbname={{ .Values.server.database }} user=POSTGRESUSER password=POSTGRESPASS host={{ include "spire.fullname" . }}-postgres-pooler.{{ .Release.Namespace }}.svc.cluster.local"
           {{- else }}
           connection_string = "dbname={{ .Values.server.database }} user=POSTGRESUSER password=POSTGRESPASS host={{ include "spire.fullname" . }}-postgres.{{ .Release.Namespace }}.svc.cluster.local"
