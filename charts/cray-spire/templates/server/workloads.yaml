@@ -121,6 +121,14 @@ data:
             value: gid:0
           - type: unix
             value: path:/opt/cray/cray-spire/cpsmount-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/cos-config-helper
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/opt/cray/cray-spire/cos-config-helper-spire-agent
       - spiffeID: spiffe://{{ .Values.trustDomain }}/ncn/XNAME/workload/heartbeat
         selectors:
           - type: unix
@@ -301,6 +309,14 @@ data:
             value: gid:0
           - type: unix
             value: path:/opt/cray/cray-spire/cpsmount-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/cos-config-helper
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/opt/cray/cray-spire/cos-config-helper-spire-agent
       - spiffeID: spiffe://{{ .Values.trustDomain }}/compute/XNAME/workload/heartbeat
         selectors:
           - type: unix
@@ -531,6 +547,14 @@ data:
             value: gid:0
           - type: unix
             value: path:/opt/cray/cray-spire/cpsmount-spire-agent
+      - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/cos-config-helper
+        selectors:
+          - type: unix
+            value: uid:0
+          - type: unix
+            value: gid:0
+          - type: unix
+            value: path:/opt/cray/cray-spire/cos-config-helper-spire-agent
       - spiffeID: spiffe://{{ .Values.trustDomain }}/uan/XNAME/workload/heartbeat
         selectors:
           - type: unix

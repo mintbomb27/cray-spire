@@ -217,6 +217,7 @@ data:
     create_if_new compute ckdump_helper /opt/cray/cray-spire/ckdump_helper 864000
     create_if_new compute cpsmount /opt/cray/cray-spire/cpsmount-spire-agent
     create_if_new compute cpsmount_helper /opt/cray/cps-utils/bin/cpsmount_helper
+    create_if_new compute cos-config-helper /opt/cray/cray-spire/cos-config-helper-spire-agent
     create_if_new compute dvs-hmi /opt/cray/cray-spire/dvs-hmi-spire-agent
     create_if_new compute dvs-map /opt/cray/cray-spire/dvs-map-spire-agent
     create_if_new compute heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
@@ -228,6 +229,7 @@ data:
     create_if_new ncn cfs-state-reporter /opt/cray/cray-spire/cfs-state-reporter-spire-agent
     create_if_new ncn cpsmount /opt/cray/cray-spire/cpsmount-spire-agent
     create_if_new ncn cpsmount_helper /opt/cray/cps-utils/bin/cpsmount_helper
+    create_if_new ncn cos-config-helper /opt/cray/cray-spire/cos-config-helper-spire-agent
     create_if_new ncn dvs-hmi /opt/cray/cray-spire/dvs-hmi-spire-agent
     create_if_new ncn dvs-map /opt/cray/cray-spire/dvs-map-spire-agent
     create_if_new ncn heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
@@ -244,6 +246,7 @@ data:
     create_if_new uan ckdump_helper /opt/cray/cray-spire/ckdump_helper 864000
     create_if_new uan cpsmount /opt/cray/cray-spire/cpsmount-spire-agent
     create_if_new uan cpsmount_helper /opt/cray/cps-utils/bin/cpsmount_helper
+    create_if_new uan cos-config-helper /opt/cray/cray-spire/cos-config-helper-spire-agent
     create_if_new uan dvs-hmi /opt/cray/cray-spire/dvs-hmi-spire-agent
     create_if_new uan dvs-map /opt/cray/cray-spire/dvs-map-spire-agent
     create_if_new uan heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
