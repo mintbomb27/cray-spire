@@ -38,7 +38,7 @@ data:
         "meta-data": {
           "spire": {
             "trustdomain": "{{ .Values.trustDomain }}",
-            "fqdn": "{{ .Values.server.lbIP }}"
+            "fqdn": "{{ .Values.server.lb.local }}"
           }
         }
       }

@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright [2022] Hewlett Packard Enterprise Development LP
+# (C) Copyright [2023] Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -21,10 +21,10 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
+---
 apiVersion: kuttl.dev/v1beta1
 kind: TestSuite
 commands:
-  - command: ./tests/kuttl/load-kind.sh
   - command: kubectl create ns services
   - command: kubectl create ns spire
   - command: kubectl create ns sysmgmt-health
@@ -41,7 +41,4 @@ commands:
   - command: ./tests/kuttl/wait-for-pods.sh
 testDirs:
   - ./tests/kuttl
-startKIND: true
-kindConfig: kind.yaml
-kindNodeCache: true
 artifactsDir: /tmp/kuttl

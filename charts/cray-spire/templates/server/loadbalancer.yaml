@@ -26,10 +26,28 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/name: {{ template "spire.name" . }}-server
-  name: {{ template "spire.name" . }}-lb
+  name: {{ template "spire.name" . }}-local
 spec:
-  loadBalancerIP: {{ .Values.server.lbIP }}
+  loadBalancerIP: {{ .Values.server.lb.local }}
   externalTrafficPolicy: Local
+  ports:
+  - name: {{ include "spire.fullname" . }}-server
+    port: 8081
+    targetPort: 8081
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ template "spire.name" . }}-server
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ template "spire.name" . }}-server
+  name: {{ template "spire.name" . }}-cluster
+spec:
+  loadBalancerIP: {{ .Values.server.lb.cluster }}
+  externalTrafficPolicy: Cluster
   ports:
   - name: {{ include "spire.fullname" . }}-server
     port: 8081

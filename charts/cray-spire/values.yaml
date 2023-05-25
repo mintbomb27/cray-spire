@@ -32,9 +32,11 @@ trustDomain: shasta
 vshasta: false
 
 server:
+  disableExternalCerts: true
   replicaCount: 3
-  lbIP: "10.92.100.83"
-  fqdn: crayspire.local
+  lb:
+    local: "10.92.100.83"
+    cluster: "10.92.100.84"
   port: 8081
   logLevel: INFO
   jwtIssuer: http://crayspire.local/shasta
