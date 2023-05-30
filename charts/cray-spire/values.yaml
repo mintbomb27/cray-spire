@@ -113,8 +113,10 @@ cray-postgresql:
       idle_in_transaction_session_timeout: "5000"
       statement_timeout: "60000"
     backup:
-      enableLogicalBackup: true
-      logicalBackupSchedule: "10 3 * * *"  # Once per day at 3:10AM
+      # Backups are disabled due to issues with client SVTs after restores.
+      # It is better to completely reinstall the spire server and rejoin all
+      # nodes than to restore from a backup.
+      enableLogicalBackup: false
 
 tls:
   issuer: cert-manager-issuer-common

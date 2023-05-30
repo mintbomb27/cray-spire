@@ -23,7 +23,7 @@
 #
 apiVersion: v2
 name: spire
-version: 2.14.1
+version: 2.14.2
 description: A Helm chart for spire
 home: https://github.com/Cray-HPE/cray-spire
 dependencies:
