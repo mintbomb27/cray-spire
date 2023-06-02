@@ -30,17 +30,12 @@ server:
 jwks:
   replicaCount: 1
 
-cray-service:
+cray-postgresql:
+  nameOverride: cray-spire
   sqlCluster:
+    instanceCount: 1
+    volumeSize: 1Gi
     tls:
       enabled: false
-    instanceCount: 1
-    connectionPooler:
-      enabled: false
-    resources:
-      limits:
-        cpu: 100m
-        memory: 256Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
+    backup:
+      enableLogicalBackup: false

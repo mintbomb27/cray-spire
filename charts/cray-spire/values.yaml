@@ -32,9 +32,11 @@ trustDomain: shasta
 vshasta: false
 
 server:
+  disableExternalCerts: true
   replicaCount: 3
-  lbIP: "10.92.100.83"
-  fqdn: crayspire.local
+  lb:
+    local: "10.92.100.83"
+    cluster: "10.92.100.84"
   port: 8081
   logLevel: INFO
   jwtIssuer: http://crayspire.local/shasta
@@ -83,11 +85,8 @@ server:
     size: 1Gi
     storageClass: ""
 
-cray-service:
-  type: ""
+cray-postgresql:
   nameOverride: cray-spire
-  service:
-    enabled: false
   sqlCluster:
     enabled: true
     instanceCount: 3
@@ -114,8 +113,10 @@ cray-service:
       idle_in_transaction_session_timeout: "5000"
       statement_timeout: "60000"
     backup:
-      enabled: true
-      schedule: "10 3 * * *"  # Once per day at 3:10AM
+      # Backups are disabled due to issues with client SVTs after restores.
+      # It is better to completely reinstall the spire server and rejoin all
+      # nodes than to restore from a backup.
+      enableLogicalBackup: false
 
 tls:
   issuer: cert-manager-issuer-common

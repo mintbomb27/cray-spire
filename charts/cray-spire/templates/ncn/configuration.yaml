@@ -33,7 +33,7 @@ data:
     agent {
       data_dir = "{{ .Values.ncn.path }}"
       log_level = "INFO"
-      server_address = "{{ .Values.server.fqdn }}"
+      server_address = "{{ .Values.server.lb.cluster }}"
       server_port = "8081"
       socket_path = "{{ .Values.ncn.path }}/agent.sock"
       trust_bundle_path = "{{ .Values.ncn.path }}/conf/bundle.crt"

@@ -85,7 +85,7 @@ annotated-images:
 
 images:
 	{ CHART=charts/spire              $(MAKE) -s extracted-images annotated-images; \
-	{ CHART=charts/cray-spire         $(MAKE) -s extracted-images annotated-images; \
+	  CHART=charts/cray-spire         $(MAKE) -s extracted-images annotated-images; \
 	  CHART=charts/spire-intermediate $(MAKE) -s extracted-images annotated-images; \
 	} | sort -u
 
@@ -101,4 +101,4 @@ gen-docs:
 		helm-docs --chart-search-root=charts
 
 clean:
-	$(RM) -r .helm packages charts/spire/charts
+	$(RM) -r .helm packages charts/spire/charts charts/cray-spire/charts
