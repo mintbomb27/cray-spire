@@ -210,7 +210,7 @@ spec:
           emptyDir: {}
         - name: shared-socket
           hostPath:
-            path: /run/spire/sockets/shared
+            path: {{ .Values.agent.wlSocket }}/shared
             type: DirectoryOrCreate
         - name: db-creds
           secret:
