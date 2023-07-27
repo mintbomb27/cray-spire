@@ -32,7 +32,6 @@ trustDomain: shasta
 vshasta: false
 
 server:
-  disableExternalCerts: true
   replicaCount: 3
   lb:
     local: "10.92.100.83"
