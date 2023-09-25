@@ -78,6 +78,12 @@ data:
         }
       }
 
+      NodeAttestor "tpm_devid" {
+        plugin_data {
+          devid_ca_path = "/devid-ca/devid-ca.crt"
+          endorsement_ca_path = "/endorsement-ca/manufacturers.pem"
+      }
+
       NodeAttestor "k8s_sat" {
         plugin_data {
           clusters = {
@@ -222,7 +228,7 @@ data:
     create_if_new compute dvs-map /opt/cray/cray-spire/dvs-map-spire-agent
     create_if_new compute heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
     create_if_new compute orca /opt/cray/cray-spire/orca-spire-agent
-    create_if_new compute tpm-provisioner /opt/cray/cray-spire/tpm-provisioner
+    create_if_new compute tpm-provisioner /opt/cray/cray-spire/tpm-provisioner-client
     create_if_new compute wlm /opt/cray/cray-spire/wlm-spire-agent
 
     create_if_new ncn bos-reporter /opt/cray/cray-spire/bos-reporter-spire-agent
@@ -234,11 +240,11 @@ data:
     create_if_new ncn dvs-map /opt/cray/cray-spire/dvs-map-spire-agent
     create_if_new ncn heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
     create_if_new ncn orca /opt/cray/cray-spire/orca-spire-agent
-    create_if_new ncn tpm-provisioner /opt/cray/cray-spire/tpm-provisioner
+    create_if_new ncn tpm-provisioner /opt/cray/cray-spire/tpm-provisioner-client
 
     create_if_new storage cfs-state-reporter /opt/cray/cray-spire/cfs-state-reporter-spire-agent
     create_if_new storage heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
-    create_if_new storage tpm-provisioner /opt/cray/cray-spire/tpm-provisioner
+    create_if_new storage tpm-provisioner /opt/cray/cray-spire/tpm-provisioner-client
 
     create_if_new uan bos-reporter /opt/cray/cray-spire/bos-reporter-spire-agent
     create_if_new uan cfs-state-reporter /opt/cray/cray-spire/cfs-state-reporter-spire-agent
@@ -251,6 +257,6 @@ data:
     create_if_new uan dvs-map /opt/cray/cray-spire/dvs-map-spire-agent
     create_if_new uan heartbeat /opt/cray/cray-spire/heartbeat-spire-agent
     create_if_new uan orca /opt/cray/cray-spire/orca-spire-agent
-    create_if_new uan tpm-provisioner /opt/cray/cray-spire/tpm-provisioner
+    create_if_new uan tpm-provisioner /opt/cray/cray-spire/tpm-provisioner-client
     {{- end }}
     exit 0

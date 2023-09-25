@@ -23,7 +23,7 @@
 ---
 apiVersion: v2
 name: cray-spire
-version: 1.5.1
+version: 1.5.2
 description: A Helm chart for spire
 home: https://github.com/Cray-HPE/cray-spire
 dependencies:
@@ -41,7 +41,7 @@ annotations:
     - name: spire-bundle
       image: artifactory.algol60.net/csm-docker/stable/spire-bundle:0.2.0
     - name: spire-tokens
-      image: artifactory.algol60.net/csm-docker/stable/spire-tokens:3.1.0
+      image: artifactory.algol60.net/csm-docker/stable/spire-tokens:3.3.1
     - name: wait-for-it
       image: artifactory.algol60.net/csm-docker/stable/sdlc-ops/wait-for-it:1.0.0
     - name: alpine
