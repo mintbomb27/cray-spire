@@ -234,7 +234,7 @@ spec:
             name: {{ include "spire.fullname" . }}-workloads
         - name: devid-ca
           secret:
-            name: tpm.spire.ca-tls
+            secretName: tpm.spire.ca-tls
             items:
               - key: tls.crt
                 path: devid-ca.crt
