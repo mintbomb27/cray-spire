@@ -159,8 +159,8 @@ spec:
             - name: devid-ca
               mountPath: /devid-ca
               readOnly: true
-            - name: endorcement-ca
-              mountPath: /endorcement-ca
+            - name: endorsement-ca
+              mountPath: /endorsement-ca
               readOnly: true
         - name: registration-server
           image: "{{ .Values.server.registration.repository }}:{{ .Values.server.registration.tag }}"
@@ -238,7 +238,7 @@ spec:
             items:
               - key: tls.crt
                 path: devid-ca.crt
-        - name: endorcement-ca
+        - name: endorsement-ca
           configMap:
             name: tpm-provisioner-manufacturercas
   volumeClaimTemplates:

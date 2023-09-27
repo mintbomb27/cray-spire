@@ -82,6 +82,7 @@ data:
         plugin_data {
           devid_ca_path = "/devid-ca/devid-ca.crt"
           endorsement_ca_path = "/endorsement-ca/manufacturers.pem"
+        }
       }
 
       NodeAttestor "k8s_sat" {
