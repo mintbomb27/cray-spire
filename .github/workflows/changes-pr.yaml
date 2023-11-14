@@ -1,0 +1,30 @@
+name: PR File Changes
+
+on:
+  pull_request:
+    paths:
+      - 'charts/*'
+
+jobs:
+  analyze-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get Changed Files
+        id: get-changed-files
+        run: echo "::set-output name=files::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})"
+
+      - name: Run Kubescape Scan
+        uses: kubescape/github-action@main
+        continue-on-error: true
+        with:
+          format: sarif
+          files: ${{ steps.get-changed-files.outputs.files }}
+          outputFile: results
+      - name: Upload Kubescape scan results to Github Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: results.sarif
