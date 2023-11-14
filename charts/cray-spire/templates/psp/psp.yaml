@@ -31,6 +31,7 @@ spec:
   - NET_ADMIN
   - NET_RAW
   allowedHostPaths:
+  - pathPrefix: /run/cray-spire
   - pathPrefix: /run/spire
   - pathPrefix: "{{ .Values.ncn.path }}/conf"
   fsGroup:

@@ -54,6 +54,13 @@ spec:
         podSelector:
           matchLabels:
             app.kubernetes.io/name: {{ include "spire.fullname" . }}-server
+      # TPM-Provisioner need to request
+      - namespaceSelector:
+          matchLabels:
+            name: {{ .Release.Namespace }}
+        podSelector:
+          matchLabels:
+            app.kubernetes.io/name: tpm-provisioner
       ports:
         - protocol: TCP
           port: 54440

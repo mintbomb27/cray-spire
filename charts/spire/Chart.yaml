@@ -28,7 +28,7 @@ description: A Helm chart for spire
 home: https://github.com/Cray-HPE/cray-spire
 dependencies:
   - name: cray-postgresql
-    version: ~1.0.0
+    version: ~1.0.3
     repository: "https://artifactory.algol60.net/artifactory/csm-helm-charts/"
 maintainers:
   - name: kburns-hpe

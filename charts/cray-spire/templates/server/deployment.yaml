@@ -156,6 +156,12 @@ spec:
             - name: data
               mountPath: /run/spire/data
               readOnly: false
+            - name: devid-ca
+              mountPath: /devid-ca
+              readOnly: true
+            - name: endorsement-ca
+              mountPath: /endorsement-ca
+              readOnly: true
         - name: registration-server
           image: "{{ .Values.server.registration.repository }}:{{ .Values.server.registration.tag }}"
           imagePullPolicy: {{ .Values.server.registration.pullPolicy }}
@@ -210,7 +216,7 @@ spec:
           emptyDir: {}
         - name: shared-socket
           hostPath:
-            path: /run/spire/sockets/shared
+            path: {{ .Values.agent.wlSocket }}/shared
             type: DirectoryOrCreate
         - name: db-creds
           secret:
@@ -226,6 +232,15 @@ spec:
         - name: workloads
           configMap:
             name: {{ include "spire.fullname" . }}-workloads
+        - name: devid-ca
+          secret:
+            secretName: tpm.spire.ca-tls
+            items:
+              - key: tls.crt
+                path: devid-ca.crt
+        - name: endorsement-ca
+          configMap:
+            name: tpm-provisioner-manufacturercas
   volumeClaimTemplates:
     - metadata:
         name: data
